@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Heart, Edit2, CheckCircle2 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/constants";
 
 export default function RSVPForm({ 
   guestId, 
@@ -47,7 +48,7 @@ export default function RSVPForm({
     setError("");
 
     try {
-      const response = await fetch(`http://localhost:8585/api/invitations/${guestId}/rsvp`, {
+      const response = await fetch(`${API_BASE_URL}/api/invitations/${guestId}/rsvp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

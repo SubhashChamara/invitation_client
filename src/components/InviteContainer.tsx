@@ -18,7 +18,7 @@ import EventCards from "./EventCards";
 import WeddingTimeline from "./WeddingTimeline";
 import ThankYouSection from "./ThankYouSection";
 import Footer from "./Footer";
-import { WEDDING_DATE_ISO } from "@/lib/constants";
+import { WEDDING_DATE_ISO, API_BASE_URL } from "@/lib/constants";
 
 type Guest = {
   id: string;
@@ -54,7 +54,7 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
       }
 
       try {
-        const response = await fetch(`http://localhost:8585/api/invitations/${guestSlug}`);
+        const response = await fetch(`${API_BASE_URL}/api/invitations/${guestSlug}`);
         if (response.ok) {
           const data = await response.json();
           setGuest({

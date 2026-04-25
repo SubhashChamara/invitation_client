@@ -27,6 +27,7 @@ import {
   PieChart,
   Wallet
 } from "lucide-react";
+import { API_BASE_URL } from "@/lib/constants";
 
 type Expense = {
   id: string;
@@ -129,7 +130,7 @@ export default function AdminPortal() {
   const fetchInvitees = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8585/api/invitations");
+      const response = await fetch(`${API_BASE_URL}/api/invitations`);
       if (response.ok) {
         const data = await response.json();
         setInvitees(data);
@@ -143,7 +144,7 @@ export default function AdminPortal() {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch("http://localhost:8585/api/vendors");
+      const response = await fetch(`${API_BASE_URL}/api/vendors`);
       if (response.ok) {
         const data = await response.json();
         setVendors(data);
@@ -155,7 +156,7 @@ export default function AdminPortal() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch("http://localhost:8585/api/expenses");
+      const response = await fetch(`${API_BASE_URL}/api/expenses`);
       if (response.ok) {
         const data = await response.json();
         setExpenses(data);
@@ -205,8 +206,8 @@ export default function AdminPortal() {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     const url = selectedInvitee 
-      ? `http://localhost:8585/api/invitations/${selectedInvitee.id}`
-      : "http://localhost:8585/api/invitations";
+      ? `${API_BASE_URL}/api/invitations/${selectedInvitee.id}`
+      : `${API_BASE_URL}/api/invitations`;
     
     const method = selectedInvitee ? "PUT" : "POST";
 
@@ -231,7 +232,7 @@ export default function AdminPortal() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this invitation?")) return;
     try {
-      const response = await fetch(`http://localhost:8585/api/invitations/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/invitations/${id}`, {
         method: "DELETE"
       });
       if (response.ok) fetchInvitees();
@@ -287,8 +288,8 @@ export default function AdminPortal() {
     e.preventDefault();
     const isEdit = selectedInvitee && activeTab === "vendors"; // Temporary reuse of selectedInvitee for logic
     const url = isEdit 
-      ? `http://localhost:8585/api/vendors/${selectedInvitee.id}`
-      : "http://localhost:8585/api/vendors";
+      ? `${API_BASE_URL}/api/vendors/${selectedInvitee.id}`
+      : `${API_BASE_URL}/api/vendors`;
     
     const method = isEdit ? "PUT" : "POST";
 
@@ -313,7 +314,7 @@ export default function AdminPortal() {
   const handleVendorDelete = async (id: string) => {
     if (!confirm("Remove this contact?")) return;
     try {
-      const response = await fetch(`http://localhost:8585/api/vendors/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/vendors/${id}`, {
         method: "DELETE"
       });
       if (response.ok) fetchVendors();
@@ -332,7 +333,7 @@ export default function AdminPortal() {
       const fileData = new FormData();
       fileData.append("file", selectedFile);
       try {
-        const uploadRes = await fetch("http://localhost:8585/api/files/upload", {
+        const uploadRes = await fetch(`${API_BASE_URL}/api/files/upload`, {
           method: "POST",
           body: fileData
         });
@@ -347,8 +348,8 @@ export default function AdminPortal() {
 
     const isEdit = selectedInvitee && activeTab === "expenditures";
     const url = isEdit 
-      ? `http://localhost:8585/api/expenses/${selectedInvitee.id}`
-      : "http://localhost:8585/api/expenses";
+      ? `${API_BASE_URL}/api/expenses/${selectedInvitee.id}`
+      : `${API_BASE_URL}/api/expenses`;
     
     const method = isEdit ? "PUT" : "POST";
 
@@ -388,7 +389,7 @@ export default function AdminPortal() {
   const handleExpenseDelete = async (id: string) => {
     if (!confirm("Delete this expense record?")) return;
     try {
-      const response = await fetch(`http://localhost:8585/api/expenses/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/expenses/${id}`, {
         method: "DELETE"
       });
       if (response.ok) fetchExpenses();
