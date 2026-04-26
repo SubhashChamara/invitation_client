@@ -248,10 +248,18 @@ export default function AdminPortal() {
   };
 
   const shareViaWhatsApp = (inv: Invitee) => {
-    const link = `${window.location.origin}/invite/${inv.id}`;
+    // Ensure the phone number is in international format (defaulting to +94 for Sri Lanka if it starts with 0)
+    let phone = inv.phoneNumber?.replace(/\D/g, '') || "";
+    if (phone.startsWith('0')) {
+      phone = '94' + phone.substring(1);
+    }
+    
+    // Use the public domain for the invitation link
+    const publicDomain = "https://oshanisubhash.online";
+    const link = `${publicDomain}/invite/${inv.id}`;
     const text = `Hi ${inv.name}, we would love to have you at our wedding! Please view your digital invitation here: ${link}`;
     const encodedText = encodeURIComponent(text);
-    const whatsappUrl = `https://wa.me/${inv.phoneNumber?.replace(/\D/g, '')}?text=${encodedText}`;
+    const whatsappUrl = `https://wa.me/${phone}?text=${encodedText}`;
     window.open(whatsappUrl, '_blank');
   };
 
