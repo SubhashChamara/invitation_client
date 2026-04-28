@@ -21,12 +21,20 @@ import {
   Briefcase,
   Smartphone,
   Phone,
+  Wallet,
+  LogOut,
   LayoutDashboard,
+  QrCode,
+  Download,
   Settings,
   DollarSign,
   PieChart,
-  Wallet
+  ImageUp,
+  CheckCircle,
+  AlertCircle
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { QRCodeSVG } from "qrcode.react";
 import { API_BASE_URL } from "@/lib/constants";
 
 type Expense = {
@@ -94,7 +102,15 @@ export default function AdminPortal() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [expandedMessages, setExpandedMessages] = useState<Set<string>>(new Set());
   const [expandedReceipts, setExpandedReceipts] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState<"guests" | "vendors" | "expenditures">("guests");
+  const [activeTab, setActiveTab] = useState<"guests" | "vendors" | "expenditures" | "thanks">("guests");
+
+  // Thanks Card upload state
+  const [thanksFile, setThanksFile] = useState<File | null>(null);
+  const [thanksPreview, setThanksPreview] = useState<string | null>(null);
+  const [thanksUploading, setThanksUploading] = useState(false);
+  const [thanksStatus, setThanksStatus] = useState<"idle" | "success" | "error">("idle");
+  const [currentThanksImage, setCurrentThanksImage] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [expenseFormData, setExpenseFormData] = useState({
@@ -115,6 +131,31 @@ export default function AdminPortal() {
     phoneNumber: "",
     note: ""
   });
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [qrColor, setQrColor] = useState("#2c2c2c");
+  const [qrTextColor, setQrTextColor] = useState("#c5a059");
+  
+  const getCookie = (name: string) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift();
+    return null;
+  };
+
+  const getAuthHeaders = () => {
+    const token = getCookie('admin_token');
+    return {
+      "Content-Type": "application/json",
+      ...(token ? { "Authorization": `Bearer ${token}` } : {})
+    };
+  };
+  
+  const router = useRouter();
+
+  const handleLogout = () => {
+    document.cookie = "admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Lax";
+    router.push("/login");
+  };
   
   // Form State
   const [formData, setFormData] = useState({
@@ -130,7 +171,9 @@ export default function AdminPortal() {
   const fetchInvitees = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/invitations`);
+      const response = await fetch(`${API_BASE_URL}/api/invitations`, {
+        headers: getAuthHeaders()
+      });
       if (response.ok) {
         const data = await response.json();
         setInvitees(data);
@@ -144,7 +187,9 @@ export default function AdminPortal() {
 
   const fetchVendors = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/vendors`);
+      const response = await fetch(`${API_BASE_URL}/api/vendors`, {
+        headers: getAuthHeaders()
+      });
       if (response.ok) {
         const data = await response.json();
         setVendors(data);
@@ -156,7 +201,9 @@ export default function AdminPortal() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/expenses`);
+      const response = await fetch(`${API_BASE_URL}/api/expenses`, {
+        headers: getAuthHeaders()
+      });
       if (response.ok) {
         const data = await response.json();
         setExpenses(data);
@@ -166,10 +213,46 @@ export default function AdminPortal() {
     }
   };
 
+  const fetchCurrentThanksImage = () => {
+    fetch(`/api/thanks-image?t=${Date.now()}`)
+      .then(res => { if (!res.ok) throw new Error(); return res.blob(); })
+      .then(blob => setCurrentThanksImage(URL.createObjectURL(blob)))
+      .catch(() => setCurrentThanksImage(null));
+  };
+
+  const handleThanksFileSelect = (file: File) => {
+    setThanksFile(file);
+    setThanksStatus("idle");
+    const reader = new FileReader();
+    reader.onload = e => setThanksPreview(e.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleThanksUpload = async () => {
+    if (!thanksFile) return;
+    setThanksUploading(true);
+    setThanksStatus("idle");
+    const fd = new FormData();
+    fd.append("file", thanksFile);
+    try {
+      const res = await fetch("/api/thanks-image", { method: "POST", body: fd });
+      if (!res.ok) throw new Error();
+      setThanksStatus("success");
+      setThanksFile(null);
+      setThanksPreview(null);
+      fetchCurrentThanksImage();
+    } catch {
+      setThanksStatus("error");
+    } finally {
+      setThanksUploading(false);
+    }
+  };
+
   useEffect(() => {
     fetchInvitees();
     fetchVendors();
     fetchExpenses();
+    fetchCurrentThanksImage();
     
     // Load budgets from localStorage
     const savedBudgets = localStorage.getItem('wedding_category_budgets');
@@ -214,7 +297,7 @@ export default function AdminPortal() {
     try {
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify(formData)
       });
       
@@ -233,7 +316,8 @@ export default function AdminPortal() {
     if (!confirm("Are you sure you want to delete this invitation?")) return;
     try {
       const response = await fetch(`${API_BASE_URL}/api/invitations/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: getAuthHeaders()
       });
       if (response.ok) fetchInvitees();
     } catch (error) {
@@ -304,7 +388,7 @@ export default function AdminPortal() {
     try {
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify(vendorFormData)
       });
       
@@ -323,7 +407,8 @@ export default function AdminPortal() {
     if (!confirm("Remove this contact?")) return;
     try {
       const response = await fetch(`${API_BASE_URL}/api/vendors/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: getAuthHeaders()
       });
       if (response.ok) fetchVendors();
     } catch (error) {
@@ -343,6 +428,9 @@ export default function AdminPortal() {
       try {
         const uploadRes = await fetch(`${API_BASE_URL}/api/files/upload`, {
           method: "POST",
+          headers: {
+            "Authorization": `Bearer ${getCookie('admin_token')}`
+          },
           body: fileData
         });
         if (uploadRes.ok) {
@@ -364,7 +452,7 @@ export default function AdminPortal() {
     try {
       const response = await fetch(url, {
         method,
-        headers: { "Content-Type": "application/json" },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           ...expenseFormData,
           receiptUrl: currentReceiptUrl
@@ -398,7 +486,8 @@ export default function AdminPortal() {
     if (!confirm("Delete this expense record?")) return;
     try {
       const response = await fetch(`${API_BASE_URL}/api/expenses/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: getAuthHeaders()
       });
       if (response.ok) fetchExpenses();
     } catch (error) {
@@ -420,7 +509,8 @@ export default function AdminPortal() {
           {[
             { id: "guests", label: "Guest Management", icon: Users },
             { id: "vendors", label: "Vendor Contacts", icon: Contact },
-            { id: "expenditures", label: "Expenditures", icon: DollarSign }
+            { id: "expenditures", label: "Expenditures", icon: DollarSign },
+            { id: "thanks", label: "Thanks Card", icon: ImageUp }
           ].map(tab => (
             <button
               key={tab.id}
@@ -442,13 +532,18 @@ export default function AdminPortal() {
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-12">
         <div>
           <h1 className="text-4xl font-serif text-charcoal mb-2">
-            {activeTab === "guests" ? "Invitation Management" : activeTab === "vendors" ? "Vendor Directory" : "Wedding Expenditures"}
+            {activeTab === "guests" ? "Invitation Management" : 
+             activeTab === "vendors" ? "Vendor Directory" : 
+             activeTab === "thanks" ? "Thanks Card Manager" : 
+             "Wedding Expenditures"}
           </h1>
           <p className="text-charcoal/50 text-sm flex items-center gap-2">
             {activeTab === "guests" ? (
               <><Calendar className="w-4 h-4" /> Guest List & RSVP Tracking Dashboard</>
             ) : activeTab === "vendors" ? (
               <><Briefcase className="w-4 h-4" /> Professional Services & Venue Contacts</>
+            ) : activeTab === "thanks" ? (
+              <><ImageUp className="w-4 h-4" /> Thanks Card Image Configuration</>
             ) : (
               <><PieChart className="w-4 h-4" /> Comprehensive Budget & Spending Tracker</>
             )}
@@ -464,38 +559,47 @@ export default function AdminPortal() {
               <Settings className="w-4 h-4" /> Manage Budget
             </button>
           )}
+
           <button 
-            onClick={() => {
-              setSelectedInvitee(null);
-              if (activeTab === "guests") {
-                setFormData({ name: "", tableName: "", sheetDetail: "", rsvpStatus: "", guestCount: 0, rsvpMessage: "", phoneNumber: "" });
-              } else if (activeTab === "vendors") {
-                setVendorFormData({ name: "", role: "", phoneNumber: "", note: "" });
-              } else {
-                setExpenseFormData({ 
-                  description: "", 
-                  amount: 0, 
-                  category: "", 
-                  paidTo: "", 
-                  paymentMethod: "Cash",
-                  receiptUrl: "",
-                  paidBy: "Subhash",
-                  date: new Date().toISOString().split('T')[0] 
-                });
-                setSelectedFile(null);
-              }
-              setIsAdding(true);
-            }}
-            className="bg-gold hover:bg-gold-light text-white px-6 py-3 rounded-full shadow-md flex items-center gap-2 transition-all transform active:scale-95 text-sm font-bold"
+            onClick={handleLogout}
+            className="bg-white border border-red-500/10 hover:bg-red-500/5 text-red-500/60 px-6 py-3 rounded-full shadow-sm flex items-center gap-2 transition-all transform active:scale-95 text-sm font-bold"
           >
-            {activeTab === "guests" ? (
-              <><UserPlus className="w-5 h-5" /> Create New Invitation</>
-            ) : activeTab === "vendors" ? (
-              <><Contact className="w-5 h-5" /> Add Professional Contact</>
-            ) : (
-              <><DollarSign className="w-5 h-5" /> Log Expenditure</>
-            )}
+            <LogOut className="w-4 h-4" /> Sign Out
           </button>
+          {activeTab !== "thanks" && (
+            <button 
+              onClick={() => {
+                setSelectedInvitee(null);
+                if (activeTab === "guests") {
+                  setFormData({ name: "", tableName: "", sheetDetail: "", rsvpStatus: "", guestCount: 0, rsvpMessage: "", phoneNumber: "" });
+                } else if (activeTab === "vendors") {
+                  setVendorFormData({ name: "", role: "", phoneNumber: "", note: "" });
+                } else {
+                  setExpenseFormData({ 
+                    description: "", 
+                    amount: 0, 
+                    category: "", 
+                    paidTo: "", 
+                    paymentMethod: "Cash",
+                    receiptUrl: "",
+                    paidBy: "Subhash",
+                    date: new Date().toISOString().split('T')[0] 
+                  });
+                  setSelectedFile(null);
+                }
+                setIsAdding(true);
+              }}
+              className="bg-gold hover:bg-gold-light text-white px-6 py-3 rounded-full shadow-md flex items-center gap-2 transition-all transform active:scale-95 text-sm font-bold"
+            >
+              {activeTab === "guests" ? (
+                <><UserPlus className="w-5 h-5" /> Create New Invitation</>
+              ) : activeTab === "vendors" ? (
+                <><Contact className="w-5 h-5" /> Add Professional Contact</>
+              ) : (
+                <><DollarSign className="w-5 h-5" /> Log Expenditure</>
+              )}
+            </button>
+          )}
         </div>
       </div>
 
@@ -685,7 +789,8 @@ export default function AdminPortal() {
       )}
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto bg-white rounded-[32px] shadow-sm border border-charcoal/5 overflow-hidden">
+      {activeTab !== "thanks" && (
+        <div className="max-w-7xl mx-auto bg-white rounded-[32px] shadow-sm border border-charcoal/5 overflow-hidden">
         {/* Toolbar */}
         <div className="p-6 border-b border-charcoal/5 flex flex-col sm:flex-row justify-between gap-4 bg-[#fcfbf9]">
           <div className="relative flex-1 max-w-md">
@@ -1160,6 +1265,7 @@ export default function AdminPortal() {
           </div>
         )}
       </div>
+      )}
 
       {/* Add/Edit Modal */}
       <AnimatePresence>
@@ -1697,6 +1803,293 @@ export default function AdminPortal() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* ── THANKS CARD IMAGE MANAGER ── */}
+      {activeTab === "thanks" && (
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            {/* Upload Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-[32px] border border-charcoal/5 shadow-sm p-8"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
+                  <ImageUp className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-serif text-charcoal">Upload New Image</h3>
+                  <p className="text-[11px] text-charcoal/40 font-bold uppercase tracking-widest">
+                    Replaces the current thanks card photo
+                  </p>
+                </div>
+              </div>
+
+              {/* Drag & Drop Zone */}
+              <div
+                onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+                onDragLeave={() => setIsDragging(false)}
+                onDrop={e => {
+                  e.preventDefault();
+                  setIsDragging(false);
+                  const file = e.dataTransfer.files?.[0];
+                  if (file && file.type.startsWith("image/")) handleThanksFileSelect(file);
+                }}
+                className={`relative border-2 border-dashed rounded-2xl transition-all duration-200 flex flex-col items-center justify-center text-center p-8 cursor-pointer mb-6 ${
+                  isDragging
+                    ? "border-gold bg-gold/5 scale-[1.01]"
+                    : "border-charcoal/10 hover:border-gold/40 hover:bg-gold/3"
+                }`}
+                onClick={() => document.getElementById("thanks-file-input")?.click()}
+              >
+                <input
+                  id="thanks-file-input"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) handleThanksFileSelect(file);
+                    e.target.value = "";
+                  }}
+                />
+
+                {thanksPreview ? (
+                  <img
+                    src={thanksPreview}
+                    alt="Preview"
+                    className="w-full max-h-64 object-contain rounded-xl mb-4"
+                  />
+                ) : (
+                  <>
+                    <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center text-gold mb-4">
+                      <ImageUp className="w-8 h-8" />
+                    </div>
+                    <p className="text-sm font-bold text-charcoal/60 mb-1">
+                      Drag &amp; drop an image here
+                    </p>
+                    <p className="text-xs text-charcoal/30">or click to browse — JPG, PNG, WEBP, AVIF</p>
+                  </>
+                )}
+              </div>
+
+              {thanksPreview && (
+                <p className="text-xs text-charcoal/40 font-bold uppercase tracking-widest text-center mb-4">
+                  {thanksFile?.name}
+                </p>
+              )}
+
+              {/* Status Messages */}
+              {thanksStatus === "success" && (
+                <div className="flex items-center gap-2 text-green-600 bg-green-50 rounded-xl px-4 py-3 mb-4 text-sm font-bold">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  Image uploaded successfully! The Thanks Card has been updated.
+                </div>
+              )}
+              {thanksStatus === "error" && (
+                <div className="flex items-center gap-2 text-red-500 bg-red-50 rounded-xl px-4 py-3 mb-4 text-sm font-bold">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  Upload failed. Please try again.
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                {thanksFile && (
+                  <button
+                    onClick={() => { setThanksFile(null); setThanksPreview(null); setThanksStatus("idle"); }}
+                    className="flex-1 bg-charcoal/5 hover:bg-charcoal/10 text-charcoal/60 px-6 py-3 rounded-xl font-bold text-sm transition-all"
+                  >
+                    Clear
+                  </button>
+                )}
+                <button
+                  disabled={!thanksFile || thanksUploading}
+                  onClick={handleThanksUpload}
+                  className={`flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-bold text-sm transition-all ${
+                    thanksFile && !thanksUploading
+                      ? "bg-gold hover:bg-gold-light text-white shadow-md shadow-gold/20"
+                      : "bg-charcoal/5 text-charcoal/25 cursor-not-allowed"
+                  }`}
+                >
+                  {thanksUploading ? (
+                    <><Loader2 className="w-4 h-4 animate-spin" /> Uploading…</>
+                  ) : (
+                    <><ImageUp className="w-4 h-4" /> Upload &amp; Replace</>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Current Image Preview */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-white rounded-[32px] border border-charcoal/5 shadow-sm p-8 flex flex-col"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600">
+                    <ImageUp className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-serif text-charcoal">Current Image</h3>
+                    <p className="text-[11px] text-charcoal/40 font-bold uppercase tracking-widest">
+                      Live on thanks card right now
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={fetchCurrentThanksImage}
+                  className="text-xs font-bold text-charcoal/40 hover:text-gold border border-charcoal/10 hover:border-gold/30 px-3 py-1.5 rounded-lg transition-all"
+                >
+                  Refresh
+                </button>
+              </div>
+
+              <div className="flex-1 flex items-center justify-center rounded-2xl bg-[#f7f4ef] overflow-hidden min-h-[280px]">
+                {currentThanksImage ? (
+                  <img
+                    src={currentThanksImage}
+                    alt="Current Thanks Card"
+                    className="w-full h-full object-contain max-h-[400px]"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-3 text-charcoal/30 p-8 text-center">
+                    <ImageUp className="w-10 h-10" />
+                    <p className="text-sm font-bold">No image uploaded yet</p>
+                    <p className="text-xs">Upload an image using the panel on the left</p>
+                  </div>
+                )}
+              </div>
+
+              {currentThanksImage && (
+                <div className="mt-4 flex items-center gap-2 text-green-600 bg-green-50 rounded-xl px-4 py-3 text-xs font-bold">
+                  <CheckCircle className="w-4 h-4 shrink-0" />
+                  Image is active and showing on the Thanks Card page
+                </div>
+              )}
+            </motion.div>
+
+          </div>
+
+          {/* QR Code Generator Panel */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="mt-8 bg-white rounded-[32px] border border-charcoal/5 shadow-sm p-8 flex flex-col md:flex-row items-center gap-8 lg:col-span-2"
+          >
+            <div className="flex-1">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-gold/10 flex items-center justify-center text-gold">
+                  <QrCode className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-serif text-charcoal">Thank You QR Code</h3>
+                  <p className="text-[11px] text-charcoal/40 font-bold uppercase tracking-widest">
+                    Generate scannable QR for physical print
+                  </p>
+                </div>
+              </div>
+              <p className="text-charcoal/60 text-sm mb-6 max-w-sm">
+                Have guests scan this code to view the digital thank you message. You can customize the colors to match your wedding theme before downloading.
+              </p>
+
+              <div className="flex gap-8 mb-8">
+                <div className="flex flex-col items-start">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-charcoal/40 mb-2">QR Color</label>
+                  <input 
+                    type="color" 
+                    value={qrColor} 
+                    onChange={e => setQrColor(e.target.value)} 
+                    className="w-10 h-10 rounded-full cursor-pointer border-none p-0 overflow-hidden" 
+                  />
+                </div>
+                <div className="flex flex-col items-start">
+                  <label className="text-[10px] uppercase tracking-widest font-bold text-charcoal/40 mb-2">Text Color</label>
+                  <input 
+                    type="color" 
+                    value={qrTextColor} 
+                    onChange={e => setQrTextColor(e.target.value)} 
+                    className="w-10 h-10 rounded-full cursor-pointer border-none p-0 overflow-hidden" 
+                  />
+                </div>
+              </div>
+
+              <button 
+                onClick={() => {
+                  const canvas = document.createElement("canvas");
+                  const svg = document.getElementById("thank-you-qr");
+                  if (!svg) return;
+                  const serializer = new XMLSerializer();
+                  const source = serializer.serializeToString(svg);
+                  const img = new window.Image();
+                  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(source);
+                  img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    const ctx = canvas.getContext("2d");
+                    if (ctx) {
+                      ctx.fillStyle = "white";
+                      ctx.fillRect(0, 0, canvas.width, canvas.height);
+                      ctx.drawImage(img, 0, 0);
+                      const a = document.createElement("a");
+                      a.download = "ThankYouQR.png";
+                      a.href = canvas.toDataURL("image/png");
+                      a.click();
+                    }
+                  };
+                }}
+                className="bg-charcoal text-white hover:bg-charcoal/90 px-8 py-4 rounded-xl flex items-center justify-center gap-2 font-bold transition-all w-full sm:w-auto"
+              >
+                <Download className="w-5 h-5" /> Download Printable QR
+              </button>
+            </div>
+
+            <div className="bg-[#f7f4ef] p-6 rounded-[24px] border border-charcoal/5 flex justify-center items-center shrink-0">
+              <QRCodeSVG 
+                id="thank-you-qr"
+                value="https://oshanisubhash.online/thanks" 
+                size={1000}
+                level="H"
+                includeMargin={true}
+                fgColor={qrColor}
+                bgColor="#ffffff"
+                style={{ width: "200px", height: "200px" }}
+                imageSettings={{
+                  src: `data:image/svg+xml;base64,${btoa(`<svg xmlns="http://www.w3.org/2000/svg" width="500" height="150" viewBox="0 0 500 150"><rect width="500" height="150" fill="#ffffff" rx="30"/><text x="250" y="100" font-family="sans-serif" font-size="50" font-weight="bold" fill="${qrTextColor}" text-anchor="middle">Oshani &amp; Subhash</text></svg>`)}`,
+                  x: undefined,
+                  y: undefined,
+                  height: 150,
+                  width: 500,
+                  excavate: true,
+                }}
+              />
+            </div>
+          </motion.div>
+
+
+          {/* Storage path info */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="mt-6 bg-charcoal/3 border border-charcoal/5 rounded-2xl px-6 py-4 flex items-center gap-3"
+          >
+            <div className="w-8 h-8 rounded-lg bg-charcoal/5 flex items-center justify-center text-charcoal/30 shrink-0">
+              <Settings className="w-4 h-4" />
+            </div>
+            <div>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-charcoal/30 mb-0.5">Storage Path</p>
+              <p className="text-xs font-mono text-charcoal/50">E:\My_Projects\Archive\invitation\thanks</p>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

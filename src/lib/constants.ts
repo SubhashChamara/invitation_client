@@ -30,4 +30,4 @@ export const VENUE_ADDRESS = "316, Ethul Kotte Rd, Battaramulla, Sri Lanka";
 export const VENUE_COORDINATES: [number, number] = [6.9016, 79.9099];
 
 // Backend API URL
-export const API_BASE_URL = "https://api.oshanisubhash.online";
+export const API_BASE_URL = "http://localhost:8585";
