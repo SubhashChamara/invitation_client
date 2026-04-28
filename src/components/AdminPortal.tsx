@@ -339,7 +339,7 @@ export default function AdminPortal() {
     }
     
     // Use the public domain for the invitation link
-    const publicDomain = "https://oshanisubhash.online";
+    const publicDomain = API_BASE_URL
     const link = `${publicDomain}/invite/${inv.id}`;
     const text = `Hi ${inv.name}, we would love to have you at our wedding! Please view your digital invitation here: ${link}`;
     const encodedText = encodeURIComponent(text);
@@ -2053,7 +2053,7 @@ export default function AdminPortal() {
             <div className="bg-[#f7f4ef] p-6 rounded-[24px] border border-charcoal/5 flex justify-center items-center shrink-0">
               <QRCodeSVG 
                 id="thank-you-qr"
-                value="https://oshanisubhash.online/thanks" 
+                value= {`${API_BASE_URL}/thanks`} 
                 size={1000}
                 level="H"
                 includeMargin={true}
