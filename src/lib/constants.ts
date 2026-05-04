@@ -32,3 +32,7 @@ export const VENUE_COORDINATES: [number, number] = [6.9016, 79.9099];
 // Backend API URL
 export const API_BASE_URL = "https://api.oshanisubhash.online";
 // export const API_BASE_URL = "http://localhost:8585";
+
+// Frontend URL for guest links and QR codes
+export const FRONTEND_URL = "https://oshanisubhash.online";
+// export const FRONTEND_URL = "http://localhost:3000";

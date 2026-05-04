@@ -35,7 +35,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { QRCodeSVG } from "qrcode.react";
-import { API_BASE_URL } from "@/lib/constants";
+import { API_BASE_URL, FRONTEND_URL } from "@/lib/constants";
 
 type Expense = {
   id: string;
@@ -336,7 +336,7 @@ export default function AdminPortal() {
   };
 
   const copyLink = (id: string) => {
-    const link = `${window.location.origin}/invite/${id}`;
+    const link = `${FRONTEND_URL}/invite/${id}`;
     navigator.clipboard.writeText(link);
     alert("Invitation link copied to clipboard!");
   };
@@ -349,7 +349,7 @@ export default function AdminPortal() {
     }
     
     // Use the public domain for the invitation link
-    const publicDomain = API_BASE_URL
+    const publicDomain = FRONTEND_URL;
     const link = `${publicDomain}/invite/${inv.id}`;
     const text = `Hi ${inv.name}, we would love to have you at our wedding! Please view your digital invitation here: ${link}`;
     const encodedText = encodeURIComponent(text);
@@ -2063,7 +2063,7 @@ export default function AdminPortal() {
             <div className="bg-[#f7f4ef] p-6 rounded-[24px] border border-charcoal/5 flex justify-center items-center shrink-0">
               <QRCodeSVG 
                 id="thank-you-qr"
-                value= {`${API_BASE_URL}/thanks`} 
+                value= {`${FRONTEND_URL}/thanks`} 
                 size={1000}
                 level="H"
                 includeMargin={true}
