@@ -8,6 +8,7 @@ import {
   GROOM_NAME,
   WEDDING_DATE_ISO,
   VENUE_HOTEL,
+  API_BASE_URL,
 } from "@/lib/constants";
 
 function formatShortDate(iso: string) {
@@ -27,7 +28,7 @@ export default function ThankYouPage() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch("/api/thanks-image", { signal: controller.signal })
+    fetch(API_BASE_URL+"/api/thanks-image", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error("Not found");
         return res.blob();

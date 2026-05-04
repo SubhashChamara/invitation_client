@@ -214,7 +214,11 @@ export default function AdminPortal() {
   };
 
   const fetchCurrentThanksImage = () => {
-    fetch(`/api/thanks-image?t=${Date.now()}`)
+    fetch(`${API_BASE_URL}/api/thanks-image?t=${Date.now()}`, {
+      headers: {
+        "Authorization": `Bearer ${getCookie('admin_token')}`
+      }
+    })
       .then(res => { if (!res.ok) throw new Error(); return res.blob(); })
       .then(blob => setCurrentThanksImage(URL.createObjectURL(blob)))
       .catch(() => setCurrentThanksImage(null));
@@ -235,7 +239,13 @@ export default function AdminPortal() {
     const fd = new FormData();
     fd.append("file", thanksFile);
     try {
-      const res = await fetch("/api/thanks-image", { method: "POST", body: fd });
+      const res = await fetch(API_BASE_URL + "/api/thanks-image", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${getCookie('admin_token')}`
+        },
+        body: fd
+      });
       if (!res.ok) throw new Error();
       setThanksStatus("success");
       setThanksFile(null);
