@@ -53,8 +53,8 @@ export default function HeroSection({
   return (
     <section className="relative w-full h-[100dvh] bg-charcoal overflow-hidden flex flex-col items-center justify-center">
       
-      {/* Hidden Audio Element - Replace /music.mp3 in public/ with your preferred wedding track */}
-      <audio ref={audioRef} src="/music.mp3?v=3" loop />
+      {/* Hero background music */}
+      <audio ref={audioRef} src="/music.mp3?v=3" loop style={{ display: "none" }} />
       
       {/* Cinematic Background Image */}
       <Image 
@@ -90,10 +90,13 @@ export default function HeroSection({
           transition={{ duration: 1.2, delay: 0.8 }}
           className="flex flex-col items-center"
         >
-          <h1 className="text-3xl sm:text-7xl lg:text-8xl font-sans tracking-wide font-light drop-shadow-lg">
-            {brideName} <span className="font-serif italic">&amp;</span>
+          <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg">
+            {brideName}
           </h1>
-          <h1 className="text-3xl sm:text-7xl lg:text-8xl font-sans tracking-wide font-light drop-shadow-lg mt-2 mb-6">
+          <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg">
+            &
+          </h1>
+          <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg mt-2 mb-6">
             {groomName}
           </h1>
           

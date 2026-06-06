@@ -27,7 +27,7 @@ export const VENUE_NAME = "Jetwing Blue, Negombo";
 export const VENUE_HOTEL = "Jetwing Blue, Negombo";
 export const VENUE_HALL = "Ballroom";
 export const VENUE_ADDRESS = "Jetwing Blue, Ethukala, Negombo, Sri Lanka";
-export const VENUE_COORDINATES: [number, number] = [7.189510265259248, 79.85029709537112];
+export const VENUE_COORDINATES: [number, number] = [7.24184, 79.84186];
 
 // Homecoming details
 export const HOMECOMING_DATE_ISO = "2026-08-30T16:53:00";
@@ -36,7 +36,7 @@ export const HOMECOMING_TIME_DISPLAY = "05:10 PM";
 export const HOMECOMING_VENUE_NAME = "The Grand Manali, Tangalle";
 export const HOMECOMING_VENUE_HOTEL = "The Grand Manali";
 export const HOMECOMING_VENUE_HALL = "Ballrooom";
-export const HOMECOMING_VENUE_COORDINATES: [number, number] = [6.009626010731537, 80.82519194964494];   
+export const HOMECOMING_VENUE_COORDINATES: [number, number] = [6.05991, 80.83013];   
 
 // Backend API URL
 export const API_BASE_URL = "https://api.oshanisubhash.online";

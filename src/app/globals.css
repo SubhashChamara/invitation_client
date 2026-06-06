@@ -9,14 +9,7 @@
   --color-sand-light: #f5f2eb;
   --color-charcoal: #2c2c2c;
   --color-surface: rgba(255, 255, 255, 0.05);
-  
-  --color-burgundy: #800020;
-  --color-crimson-luxury: #9a1c31;
-  --color-champagne: #f0e6d2;
-  --color-rose-gold: #b76e79;
-  --color-blush: #fff5f5;
-  --color-blush-dark: #f7e5e5;
-  
+
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif), ui-serif, Georgia, serif;
   --font-script: var(--font-script), cursive;
@@ -51,9 +44,17 @@ body {
 
 /* Antigravity floating class fallback */
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .animate-float {

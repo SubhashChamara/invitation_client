@@ -150,7 +150,7 @@ export default function HomecomingInviteContainer({ guestSlug }: { guestSlug: st
         <WeddingDetailsHeader eventType="homecoming" />
 
         <EventCards 
-          onLocationClick={() => window.open('https://maps.google.com/?q=6.9016,79.9099')} 
+          onLocationClick={() => window.open('https://www.google.com/maps/place/Hotel+Grand+Manali/@6.0597098,80.8298222,54m/data=!3m1!1e3!4m12!1m5!3m4!2zNsKwMDMnMzUuNyJOIDgwwrA0OSc0OC41IkU!8m2!3d6.05991!4d80.83013!3m5!1s0x3ae6b5004e1f9183:0x4982a4911c310cb!8m2!3d6.059745!4d80.8300226!16s%2Fg%2F11xclz45cr?entry=ttu&g_ep=EgoyMDI2MDYwMS4wIKXMDSoASAFQAw%3D%3D')} 
           eventType="homecoming"
         />
         

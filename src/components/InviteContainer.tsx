@@ -172,7 +172,7 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
 
         {/* Event Specific Cards (e.g., Poruwa) */}
         <EventCards 
-          onLocationClick={() => window.open('https://maps.google.com/?q=6.9016,79.9099')} 
+          onLocationClick={() => window.open('https://www.google.com/maps/place/Jetwing+Blue/@7.2416152,79.8392307,718m/data=!3m2!1e3!4b1!4m9!3m8!1s0x3ae2e94e0e8dfdd1:0xb7e9e0067ddd429f!5m2!4m1!1i2!8m2!3d7.2416099!4d79.8418056!16s%2Fg%2F1vh_6tjr?entry=ttu&g_ep=EgoyMDI2MDYwMS4wIKXMDSoASAFQAw%3D%3D')} 
           eventType={guest.eventType}
         />
         

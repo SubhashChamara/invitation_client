@@ -23,14 +23,14 @@ const timelineEvents = [
   },
   {
     id: 3,
-    time: "10:30 AM",
+    time: "09:15 AM",
     description: "Poruwa Ceremony",
     icon: Scroll,
     active: true,
   },
   {
     id: 4,
-    time: "11:30 AM",
+    time: "10:30 AM",
     description: "Couple enters the hall",
     icon: Sparkles,
     active: true,

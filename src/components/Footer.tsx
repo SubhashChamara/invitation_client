@@ -38,6 +38,7 @@ export default function Footer({ eventType }: { eventType?: string }) {
             <h3 className="font-serif text-xl text-charcoal mb-4">Contact</h3>
             <div className="space-y-4 text-sm text-charcoal/80 font-light">
               <p>{GROOM_NAME} - 071 2900 858</p>
+              <p>{BRIDE_NAME} - 077 177 3181</p>
             </div>
           </div>
         </div>
