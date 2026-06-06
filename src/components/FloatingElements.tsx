@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export default function FloatingElements() {
+export default function FloatingElements({ eventType }: { eventType?: string }) {
   const elements = Array.from({ length: 15 }).map((_, i) => ({
     id: i,
     left: `${Math.random() * 100}%`,
@@ -13,13 +13,17 @@ export default function FloatingElements() {
     isPetal: Math.random() > 0.5,
   }));
 
+  const isHomecoming = eventType === "homecoming";
+
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
       {elements.map((el) => (
         <motion.div
           key={el.id}
           className={`absolute ${
-            el.isPetal ? "bg-white/20 rounded-full blur-[1px]" : "bg-gold/30 rotate-45 h-1 w-8"
+            el.isPetal 
+              ? (isHomecoming ? "bg-rose-300/25 rounded-full blur-[1px]" : "bg-white/20 rounded-full blur-[1px]") 
+              : (isHomecoming ? "bg-rose-gold/30 rotate-45 h-1 w-8" : "bg-gold/30 rotate-45 h-1 w-8")
           }`}
           style={{
             left: el.left,

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { VENUE_HOTEL, VENUE_HALL } from "@/lib/constants";
+import { VENUE_HOTEL, VENUE_HALL, HOMECOMING_VENUE_HOTEL, HOMECOMING_VENUE_HALL } from "@/lib/constants";
 import { UtensilsCrossed } from "lucide-react";
 
 type GuestSeatInfo = {
@@ -9,10 +9,12 @@ type GuestSeatInfo = {
   seat?: string;
 };
 
-export default function FindYourSeat({ guest }: { guest: GuestSeatInfo }) {
+export default function FindYourSeat({ guest, eventType }: { guest: GuestSeatInfo; eventType?: string }) {
   // If we don't have seating information, we shouldn't render the direct assignment
   // Or we render a fallback. For now, let's render what we have.
   const hasSeatInfo = guest.table && guest.seat;
+  const hotel = eventType === "homecoming" ? HOMECOMING_VENUE_HOTEL : VENUE_HOTEL;
+  const hall = eventType === "homecoming" ? HOMECOMING_VENUE_HALL : VENUE_HALL;
 
   return (
     <section className="w-full bg-sand-light py-20 px-4 flex flex-col items-center relative z-10">
@@ -24,8 +26,12 @@ export default function FindYourSeat({ guest }: { guest: GuestSeatInfo }) {
         className="text-center max-w-lg w-full flex flex-col items-center"
       >
         {/* Circular Icon */}
-        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-8 border border-charcoal/5">
-          <UtensilsCrossed className="w-8 h-8 text-charcoal/80 stroke-1" />
+        <div className={`w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-8 border transition-colors duration-500 ${
+          eventType === "homecoming" ? "border-burgundy/10 shadow-burgundy/5" : "border-charcoal/5"
+        }`}>
+          <UtensilsCrossed className={`w-8 h-8 stroke-1 transition-colors duration-500 ${
+            eventType === "homecoming" ? "text-burgundy" : "text-charcoal/80"
+          }`} />
         </div>
 
         {/* Title & Subtitle */}
@@ -48,14 +54,18 @@ export default function FindYourSeat({ guest }: { guest: GuestSeatInfo }) {
             <>
               <div className="flex flex-col items-center">
                 <span className="text-xs uppercase tracking-[0.2em] text-charcoal/40 font-bold mb-1">Table</span>
-                <span className="text-2xl font-serif text-charcoal">{guest.table}</span>
+                <span className={`text-2xl font-serif transition-colors duration-500 ${
+                  eventType === "homecoming" ? "text-burgundy" : "text-charcoal"
+                }`}>{guest.table}</span>
               </div>
               
               <div className="w-px h-10 bg-charcoal/10" />
               
               <div className="flex flex-col items-center">
                 <span className="text-xs uppercase tracking-[0.2em] text-charcoal/40 font-bold mb-1">Seat</span>
-                <span className="text-2xl font-serif text-charcoal">{guest.seat}</span>
+                <span className={`text-2xl font-serif transition-colors duration-500 ${
+                  eventType === "homecoming" ? "text-burgundy" : "text-charcoal"
+                }`}>{guest.seat}</span>
               </div>
             </>
           ) : (
@@ -74,9 +84,9 @@ export default function FindYourSeat({ guest }: { guest: GuestSeatInfo }) {
           className="flex flex-col gap-2 items-center"
         >
           <div className="flex items-center gap-4 text-charcoal/60">
-            <span className="text-lg font-serif">{VENUE_HOTEL}</span>
+            <span className="text-lg font-serif">{hotel}</span>
             <div className="w-1 h-1 rounded-full bg-charcoal/20" />
-            <span className="text-lg font-serif">{VENUE_HALL}</span>
+            <span className="text-lg font-serif">{hall}</span>
           </div>
         </motion.div>
       </motion.div>

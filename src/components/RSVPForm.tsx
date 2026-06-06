@@ -9,13 +9,15 @@ export default function RSVPForm({
   guestName,
   initialStatus,
   initialGuestCount,
-  initialMessage
+  initialMessage,
+  eventType
 }: { 
   guestId: string;
   guestName: string;
   initialStatus?: string;
   initialGuestCount?: number;
   initialMessage?: string;
+  eventType?: string;
 }) {
   const [status, setStatus] = useState<"attending" | "declined" | null>(null);
   const [guestsCount, setGuestsCount] = useState(1);
@@ -76,7 +78,7 @@ export default function RSVPForm({
   const hasRsvpAlready = !!initialStatus && !isEditing;
 
   return (
-    <section className="w-full bg-white pt-12 pb-24 px-4 flex flex-col items-center relative z-10">
+    <section className={`w-full ${eventType === "homecoming" ? "bg-[#faf9f6]" : "bg-white"} pt-12 pb-24 px-4 flex flex-col items-center relative z-10`}>
       
       {/* Header and Intro */}
       <motion.div 
@@ -96,7 +98,7 @@ export default function RSVPForm({
         <div className="h-px w-24 bg-charcoal/20 my-4" />
         
         <p className="text-charcoal/70 leading-relaxed font-sans text-[15px] sm:text-[17px] mt-4 px-2 tracking-wide font-light">
-          We can't wait to celebrate with you! Please let us know if you'll be joining us on our special day.
+          We can't wait to celebrate with you! Please let us know if you'll be joining us on our {eventType === "homecoming" ? "homecoming" : "special day"}.
         </p>
       </motion.div>
 
@@ -120,7 +122,9 @@ export default function RSVPForm({
               className="object-cover object-top"
             />
             {/* Floating music badge */}
-            <div className="absolute bottom-4 right-4 w-12 h-12 rounded-full bg-gold flex items-center justify-center text-white shadow-lg">
+            <div className={`absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-colors duration-500 ${
+              eventType === "homecoming" ? "bg-burgundy shadow-burgundy/20" : "bg-gold"
+            }`}>
                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             </div>
           </motion.div>
@@ -138,7 +142,7 @@ export default function RSVPForm({
               <h3 className="font-serif text-lg font-bold text-charcoal">Save the Date!</h3>
             </div>
             <p className="text-charcoal/70 text-sm leading-relaxed font-sans text-center lg:text-left">
-              Your presence will make our wedding day complete. We're so excited to celebrate this special moment with you!
+              Your presence will make our {eventType === "homecoming" ? "homecoming" : "wedding day"} complete. We're so excited to celebrate this special moment with you!
             </p>
           </motion.div>
         </div>
@@ -153,12 +157,18 @@ export default function RSVPForm({
         >
         {isSuccess ? (
           <div className="bg-sand-light p-12 rounded-[32px] text-center shadow-sm border border-charcoal/5">
-            <CheckCircle2 className="w-16 h-16 text-gold mx-auto mb-6" />
+            <CheckCircle2 className={`w-16 h-16 mx-auto mb-6 transition-colors duration-500 ${
+              eventType === "homecoming" ? "text-burgundy" : "text-gold"
+            }`} />
             <h3 className="font-serif text-3xl text-charcoal mb-4">Thank You!</h3>
             <p className="text-charcoal/70 mb-8">Your response has been securely recorded. We look forward to seeing you.</p>
             <button 
               onClick={() => { setIsSuccess(false); setIsEditing(true); }}
-              className="text-gold font-bold uppercase tracking-widest text-xs border-b border-gold pb-1 hover:text-gold-light hover:border-gold-light transition-all"
+              className={`font-bold uppercase tracking-widest text-xs border-b pb-1 transition-all ${
+                eventType === "homecoming" 
+                  ? "text-burgundy border-burgundy hover:text-crimson-luxury hover:border-crimson-luxury" 
+                  : "text-gold border-gold hover:text-gold-light hover:border-gold-light"
+              }`}
             >
               Update RSVP
             </button>
@@ -176,14 +186,20 @@ export default function RSVPForm({
             
             <button
                onClick={() => setIsEditing(true)}
-               className="flex items-center gap-2 bg-gold hover:bg-gold-light text-white px-8 py-4 rounded-full transition-all shadow-md active:scale-[0.98] text-sm uppercase tracking-widest"
+               className={`flex items-center gap-2 text-white px-8 py-4 rounded-full transition-all shadow-md active:scale-[0.98] text-sm uppercase tracking-widest ${
+                 eventType === "homecoming" 
+                   ? "bg-burgundy hover:bg-crimson-luxury shadow-burgundy/25" 
+                   : "bg-gold hover:bg-gold-light shadow-gold/20"
+               }`}
             >
                <Edit2 className="w-4 h-4" />
                Update RSVP
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="bg-[#f2efe9] p-8 sm:p-10 rounded-[32px] shadow-sm border border-charcoal/5">
+          <form onSubmit={handleSubmit} className={`p-8 sm:p-10 rounded-[32px] shadow-sm border transition-colors duration-500 ${
+            eventType === "homecoming" ? "bg-blush border-burgundy/5" : "bg-[#f2efe9] border-charcoal/5"
+          }`}>
             
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl mb-6 text-sm text-center">
@@ -255,7 +271,11 @@ export default function RSVPForm({
                 <button
                   type="submit"
                   disabled={!status || isSubmitting}
-                  className="w-full bg-gold hover:bg-gold-light text-white font-bold py-4 rounded-full transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-sm uppercase tracking-widest"
+                  className={`w-full text-white font-bold py-4 rounded-full transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-sm uppercase tracking-widest ${
+                    eventType === "homecoming" 
+                      ? "bg-burgundy hover:bg-crimson-luxury shadow-burgundy/25" 
+                      : "bg-gold hover:bg-gold-light shadow-gold/20"
+                  }`}
                 >
                   {isSubmitting ? "Sending..." : initialStatus ? "Update RSVP" : "Submit"}
                 </button>

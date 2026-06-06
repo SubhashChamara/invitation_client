@@ -18,7 +18,7 @@ import EventCards from "./EventCards";
 import WeddingTimeline from "./WeddingTimeline";
 import ThankYouSection from "./ThankYouSection";
 import Footer from "./Footer";
-import { WEDDING_DATE_ISO, API_BASE_URL } from "@/lib/constants";
+import { WEDDING_DATE_ISO, HOMECOMING_DATE_ISO, API_BASE_URL, WEDDING_DATE_DISPLAY, HOMECOMING_DATE_DISPLAY, BRIDE_NAME, GROOM_NAME } from "@/lib/constants";
 
 type Guest = {
   id: string;
@@ -29,6 +29,7 @@ type Guest = {
   rsvpStatus?: string;
   guestCount?: number;
   rsvpMessage?: string;
+  eventType?: string;
 };
 
 export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
@@ -48,6 +49,7 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
           personalized_message: "We would be absolutely thrilled to have you celebrate this magical night with us.",
           table: "Table 4",
           seat: "Seat 12A",
+          eventType: "wedding"
         });
         setLoading(false);
         return;
@@ -66,6 +68,7 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
             rsvpStatus: data.rsvpStatus,
             guestCount: data.guestCount,
             rsvpMessage: data.rsvpMessage,
+            eventType: data.eventType || "wedding",
           });
         }
  else {
@@ -143,11 +146,15 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
         <section className="w-full relative z-20">
           <HeroSection 
              isActive={isOpen}
+             weddingDate={guest.eventType === "homecoming" ? HOMECOMING_DATE_DISPLAY : WEDDING_DATE_DISPLAY}
+             brideName={BRIDE_NAME}
+             groomName={GROOM_NAME}
+             eventType={guest.eventType}
           />
         </section>
 
         {/* Countdown Section - First thing after Hero */}
-        <Countdown targetDate={WEDDING_DATE_ISO} />
+        <Countdown targetDate={guest.eventType === "homecoming" ? HOMECOMING_DATE_ISO : WEDDING_DATE_ISO} />
 
         {/* Find Your Seat Section */}
         <FindYourSeat guest={guest} />
@@ -157,14 +164,17 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
 
         {/* Note from the Couple */}
         <div className="w-full bg-white flex justify-center pb-20">
-          <CoupleNote />
+          <CoupleNote eventType={guest.eventType} />
         </div>
 
         {/* Wedding Details Header */}
-        <WeddingDetailsHeader />
+        <WeddingDetailsHeader eventType={guest.eventType} />
 
         {/* Event Specific Cards (e.g., Poruwa) */}
-        <EventCards onLocationClick={() => window.open('https://maps.google.com/?q=6.9016,79.9099')} />
+        <EventCards 
+          onLocationClick={() => window.open('https://maps.google.com/?q=6.9016,79.9099')} 
+          eventType={guest.eventType}
+        />
         
         {/* Wedding Timeline */}
         <WeddingTimeline />
@@ -176,13 +186,14 @@ export default function InviteContainer({ guestSlug }: { guestSlug: string }) {
           initialStatus={guest.rsvpStatus}
           initialGuestCount={guest.guestCount}
           initialMessage={guest.rsvpMessage}
+          eventType={guest.eventType}
         />
 
         {/* Final Thank You / Grand Finale Section */}
         <ThankYouSection />
 
         {/* Updated Details and Contact Footer */}
-        <Footer />
+        <Footer eventType={guest.eventType} />
 
       </motion.main>
 

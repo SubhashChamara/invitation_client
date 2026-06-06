@@ -66,6 +66,7 @@ type Invitee = {
   guestCount: number | null;
   rsvpMessage: string | null;
   phoneNumber: string | null;
+  eventType?: string;
 };
 
 const DEFAULT_BUDGETS: Record<string, number> = {
@@ -103,6 +104,7 @@ export default function AdminPortal() {
   const [expandedMessages, setExpandedMessages] = useState<Set<string>>(new Set());
   const [expandedReceipts, setExpandedReceipts] = useState<Set<string>>(new Set());
   const [activeTab, setActiveTab] = useState<"guests" | "vendors" | "expenditures" | "thanks">("guests");
+  const [guestManagementType, setGuestManagementType] = useState<"wedding" | "homecoming">("wedding");
 
   // Thanks Card upload state
   const [thanksFile, setThanksFile] = useState<File | null>(null);
@@ -110,6 +112,7 @@ export default function AdminPortal() {
   const [thanksUploading, setThanksUploading] = useState(false);
   const [thanksStatus, setThanksStatus] = useState<"idle" | "success" | "error">("idle");
   const [currentThanksImage, setCurrentThanksImage] = useState<string | null>(null);
+  const [thanksType, setThanksType] = useState<"thanks" | "homecoming">("thanks");
   const [isDragging, setIsDragging] = useState(false);
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -165,13 +168,14 @@ export default function AdminPortal() {
     rsvpStatus: "",
     guestCount: 0,
     rsvpMessage: "",
-    phoneNumber: ""
+    phoneNumber: "",
+    eventType: "wedding"
   });
 
-  const fetchInvitees = async () => {
+  const fetchInvitees = async (type: string = guestManagementType) => {
     setLoading(true);
     try {
-      const response = await fetch(`${API_BASE_URL}/api/invitations`, {
+      const response = await fetch(`${API_BASE_URL}/api/invitations?type=${type}`, {
         headers: getAuthHeaders()
       });
       if (response.ok) {
@@ -213,8 +217,8 @@ export default function AdminPortal() {
     }
   };
 
-  const fetchCurrentThanksImage = () => {
-    fetch(`${API_BASE_URL}/api/thanks-image?t=${Date.now()}`, {
+  const fetchCurrentThanksImage = (type: string = thanksType) => {
+    fetch(`${API_BASE_URL}/api/thanks-image?type=${type}&t=${Date.now()}`, {
       headers: {
         "Authorization": `Bearer ${getCookie('admin_token')}`
       }
@@ -239,7 +243,7 @@ export default function AdminPortal() {
     const fd = new FormData();
     fd.append("file", thanksFile);
     try {
-      const res = await fetch(API_BASE_URL + "/api/thanks-image", {
+      const res = await fetch(`${API_BASE_URL}/api/thanks-image?type=${thanksType}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${getCookie('admin_token')}`
@@ -250,7 +254,7 @@ export default function AdminPortal() {
       setThanksStatus("success");
       setThanksFile(null);
       setThanksPreview(null);
-      fetchCurrentThanksImage();
+      fetchCurrentThanksImage(thanksType);
     } catch {
       setThanksStatus("error");
     } finally {
@@ -259,10 +263,10 @@ export default function AdminPortal() {
   };
 
   useEffect(() => {
-    fetchInvitees();
+    fetchInvitees("wedding");
     fetchVendors();
     fetchExpenses();
-    fetchCurrentThanksImage();
+    fetchCurrentThanksImage("thanks");
     
     // Load budgets from localStorage
     const savedBudgets = localStorage.getItem('wedding_category_budgets');
@@ -314,8 +318,8 @@ export default function AdminPortal() {
       if (response.ok) {
         setIsAdding(false);
         setSelectedInvitee(null);
-        setFormData({ name: "", tableName: "", sheetDetail: "", rsvpStatus: "", guestCount: 0, rsvpMessage: "", phoneNumber: "" });
-        fetchInvitees();
+        setFormData({ name: "", tableName: "", sheetDetail: "", rsvpStatus: "", guestCount: 0, rsvpMessage: "", phoneNumber: "", eventType: guestManagementType });
+        fetchInvitees(guestManagementType);
       }
     } catch (error) {
       console.error("Failed to save invitee:", error);
@@ -329,14 +333,16 @@ export default function AdminPortal() {
         method: "DELETE",
         headers: getAuthHeaders()
       });
-      if (response.ok) fetchInvitees();
+      if (response.ok) fetchInvitees(guestManagementType);
     } catch (error) {
       console.error("Failed to delete invitee:", error);
     }
   };
 
   const copyLink = (id: string) => {
-    const link = `${FRONTEND_URL}/invite/${id}`;
+    const invitee = invitees.find(i => i.id === id);
+    const path = invitee?.eventType === "homecoming" ? "/homecoming/invite" : "/invite";
+    const link = `${FRONTEND_URL}${path}/${id}`;
     navigator.clipboard.writeText(link);
     alert("Invitation link copied to clipboard!");
   };
@@ -350,8 +356,10 @@ export default function AdminPortal() {
     
     // Use the public domain for the invitation link
     const publicDomain = FRONTEND_URL;
-    const link = `${publicDomain}/invite/${inv.id}`;
-    const text = `Hi ${inv.name}, we would love to have you at our wedding! Please view your digital invitation here: ${link}`;
+    const path = inv.eventType === "homecoming" ? "/homecoming/invite" : "/invite";
+    const link = `${publicDomain}${path}/${inv.id}`;
+    const eventName = inv.eventType === "homecoming" ? "homecoming celebration" : "wedding";
+    const text = `Hi ${inv.name}, we would love to have you at our ${eventName}! Please view your digital invitation here: ${link}`;
     const encodedText = encodeURIComponent(text);
     const whatsappUrl = `https://wa.me/${phone}?text=${encodedText}`;
     window.open(whatsappUrl, '_blank');
@@ -581,7 +589,7 @@ export default function AdminPortal() {
               onClick={() => {
                 setSelectedInvitee(null);
                 if (activeTab === "guests") {
-                  setFormData({ name: "", tableName: "", sheetDetail: "", rsvpStatus: "", guestCount: 0, rsvpMessage: "", phoneNumber: "" });
+                  setFormData({ name: "", tableName: "", sheetDetail: "", rsvpStatus: "", guestCount: 0, rsvpMessage: "", phoneNumber: "", eventType: guestManagementType });
                 } else if (activeTab === "vendors") {
                   setVendorFormData({ name: "", role: "", phoneNumber: "", note: "" });
                 } else {
@@ -612,6 +620,34 @@ export default function AdminPortal() {
           )}
         </div>
       </div>
+
+      {/* Guest Type Toggle - Only visible when on Guests tab */}
+      {activeTab === "guests" && (
+        <div className="max-w-7xl mx-auto mb-8 flex justify-center">
+          <div className="bg-white/50 p-1.5 rounded-2xl flex gap-1 border border-charcoal/5 shadow-sm">
+            <button
+              onClick={() => { setGuestManagementType("wedding"); fetchInvitees("wedding"); }}
+              className={`px-8 py-2.5 rounded-xl transition-all font-bold text-sm ${
+                guestManagementType === "wedding" 
+                ? "bg-gold text-white shadow-md shadow-gold/20" 
+                : "text-charcoal/40 hover:text-charcoal"
+              }`}
+            >
+              Wedding Guests
+            </button>
+            <button
+              onClick={() => { setGuestManagementType("homecoming"); fetchInvitees("homecoming"); }}
+              className={`px-8 py-2.5 rounded-xl transition-all font-bold text-sm ${
+                guestManagementType === "homecoming" 
+                ? "bg-gold text-white shadow-md shadow-gold/20" 
+                : "text-charcoal/40 hover:text-charcoal"
+              }`}
+            >
+              Homecoming Guests
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid - Hidden on Vendors */}
       {activeTab === "guests" && (
@@ -984,7 +1020,8 @@ export default function AdminPortal() {
                                 rsvpStatus: inv.rsvpStatus || "",
                                 guestCount: inv.guestCount || 0,
                                 rsvpMessage: inv.rsvpMessage || "",
-                                phoneNumber: inv.phoneNumber || ""
+                                phoneNumber: inv.phoneNumber || "",
+                                eventType: inv.eventType || guestManagementType
                               });
                              setIsAdding(true);
                            }}
@@ -1817,6 +1854,32 @@ export default function AdminPortal() {
       {/* ── THANKS CARD IMAGE MANAGER ── */}
       {activeTab === "thanks" && (
         <div className="max-w-7xl mx-auto">
+          {/* Type Toggle */}
+          <div className="flex justify-center mb-10">
+            <div className="bg-white/50 p-1.5 rounded-2xl flex gap-1 border border-charcoal/5 shadow-sm">
+              <button
+                onClick={() => { setThanksType("thanks"); fetchCurrentThanksImage("thanks"); }}
+                className={`px-8 py-2.5 rounded-xl transition-all font-bold text-sm ${
+                  thanksType === "thanks" 
+                  ? "bg-gold text-white shadow-md shadow-gold/20" 
+                  : "text-charcoal/40 hover:text-charcoal"
+                }`}
+              >
+                Wedding Card
+              </button>
+              <button
+                onClick={() => { setThanksType("homecoming"); fetchCurrentThanksImage("homecoming"); }}
+                className={`px-8 py-2.5 rounded-xl transition-all font-bold text-sm ${
+                  thanksType === "homecoming" 
+                  ? "bg-gold text-white shadow-md shadow-gold/20" 
+                  : "text-charcoal/40 hover:text-charcoal"
+                }`}
+              >
+                Homecoming Card
+              </button>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
             {/* Upload Panel */}
@@ -1830,9 +1893,11 @@ export default function AdminPortal() {
                   <ImageUp className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-serif text-charcoal">Upload New Image</h3>
+                  <h3 className="text-xl font-serif text-charcoal">
+                    Upload {thanksType === "thanks" ? "Wedding" : "Homecoming"} Image
+                  </h3>
                   <p className="text-[11px] text-charcoal/40 font-bold uppercase tracking-widest">
-                    Replaces the current thanks card photo
+                    Replaces the current {thanksType === "thanks" ? "wedding" : "homecoming"} photo
                   </p>
                 </div>
               </div>
@@ -1946,14 +2011,16 @@ export default function AdminPortal() {
                     <ImageUp className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="text-xl font-serif text-charcoal">Current Image</h3>
+                    <h3 className="text-xl font-serif text-charcoal">
+                      Current {thanksType === "thanks" ? "Wedding" : "Homecoming"} Image
+                    </h3>
                     <p className="text-[11px] text-charcoal/40 font-bold uppercase tracking-widest">
-                      Live on thanks card right now
+                      Live on {thanksType === "thanks" ? "thanks" : "homecoming"} card right now
                     </p>
                   </div>
                 </div>
                 <button
-                  onClick={fetchCurrentThanksImage}
+                  onClick={() => fetchCurrentThanksImage(thanksType)}
                   className="text-xs font-bold text-charcoal/40 hover:text-gold border border-charcoal/10 hover:border-gold/30 px-3 py-1.5 rounded-lg transition-all"
                 >
                   Refresh
@@ -2048,7 +2115,7 @@ export default function AdminPortal() {
                       ctx.fillRect(0, 0, canvas.width, canvas.height);
                       ctx.drawImage(img, 0, 0);
                       const a = document.createElement("a");
-                      a.download = "ThankYouQR.png";
+                      a.download = thanksType === "thanks" ? "WeddingThankYouQR.png" : "HomecomingThankYouQR.png";
                       a.href = canvas.toDataURL("image/png");
                       a.click();
                     }
@@ -2063,7 +2130,7 @@ export default function AdminPortal() {
             <div className="bg-[#f7f4ef] p-6 rounded-[24px] border border-charcoal/5 flex justify-center items-center shrink-0">
               <QRCodeSVG 
                 id="thank-you-qr"
-                value= {`${FRONTEND_URL}/thanks`} 
+                value= {`${FRONTEND_URL}/thanks${thanksType === "thanks" ? "" : "/homecoming"}`} 
                 size={1000}
                 level="H"
                 includeMargin={true}

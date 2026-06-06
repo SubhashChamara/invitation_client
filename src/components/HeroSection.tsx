@@ -10,12 +10,14 @@ export default function HeroSection({
   brideName = BRIDE_NAME,
   groomName = GROOM_NAME,
   weddingDate = WEDDING_DATE_DISPLAY,
-  isActive = false
+  isActive = false,
+  eventType = "wedding"
 }: {
   brideName?: string;
   groomName?: string;
   weddingDate?: string;
   isActive?: boolean;
+  eventType?: string;
 }) {
   // Start playing by default when active
   const [isPlaying, setIsPlaying] = useState(false);
@@ -52,7 +54,7 @@ export default function HeroSection({
     <section className="relative w-full h-[100dvh] bg-charcoal overflow-hidden flex flex-col items-center justify-center">
       
       {/* Hidden Audio Element - Replace /music.mp3 in public/ with your preferred wedding track */}
-      <audio ref={audioRef} src="/music.mp3" loop />
+      <audio ref={audioRef} src="/music.mp3?v=3" loop />
       
       {/* Cinematic Background Image */}
       <Image 
@@ -77,7 +79,7 @@ export default function HeroSection({
         >
           <Bell className="w-4 h-4 text-white/80" />
           <span className="text-xs sm:text-sm font-sans tracking-[0.25em] uppercase text-white/90">
-            We're Getting Married
+            {eventType === "homecoming" ? "Our Homecoming Celebration" : "We're Getting Married"}
           </span>
           <Bell className="w-4 h-4 text-white/80" />
         </motion.div>
@@ -127,13 +129,17 @@ export default function HeroSection({
         onClick={toggleMusic}
         className={`absolute bottom-8 right-6 z-30 w-12 h-12 backdrop-blur-md rounded-full border flex items-center justify-center transition-colors ${
           isPlaying 
-            ? 'bg-black/40 border-gold/50 text-gold-light hover:bg-black/60' 
+            ? (eventType === "homecoming" 
+                ? 'bg-black/40 border-burgundy/50 text-rose-gold hover:bg-black/60 shadow-lg shadow-burgundy/10' 
+                : 'bg-black/40 border-gold/50 text-gold-light hover:bg-black/60') 
             : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
         }`}
       >
         {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
         {isPlaying && (
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-gold-light rounded-full animate-ping" />
+          <span className={`absolute -top-1 -right-1 w-3 h-3 rounded-full animate-ping ${
+            eventType === "homecoming" ? "bg-rose-gold" : "bg-gold-light"
+          }`} />
         )}
       </motion.button>
       

@@ -12,7 +12,7 @@ import {
   GROOM_PARENTS 
 } from "@/lib/constants";
 
-export default function HappyCouple() {
+export default function HappyCouple({ eventType }: { eventType?: string }) {
   const floatVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.8 } }
@@ -65,7 +65,9 @@ export default function HappyCouple() {
             </div>
 
             {/* Floating Crown Badge */}
-            <div className="absolute top-2 -right-2 w-12 h-12 rounded-full bg-[#b89e95] flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float">
+            <div className={`absolute top-2 -right-2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float transition-colors duration-500 ${
+              eventType === "homecoming" ? "bg-rose-gold" : "bg-[#b89e95]"
+            }`}>
               <Crown className="w-5 h-5" />
             </div>
           </div>
@@ -100,7 +102,9 @@ export default function HappyCouple() {
             </div>
 
             {/* Floating Crown Badge */}
-            <div className="absolute top-2 -right-2 w-12 h-12 rounded-full bg-navy flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float">
+            <div className={`absolute top-2 -right-2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float transition-colors duration-500 ${
+              eventType === "homecoming" ? "bg-burgundy shadow-burgundy/15" : "bg-navy"
+            }`}>
               <Crown className="w-5 h-5" />
             </div>
           </div>

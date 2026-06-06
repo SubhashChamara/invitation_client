@@ -9,21 +9,21 @@ import { Diamond, Bell, Scroll, Sparkles, Utensils, Music, Car } from "lucide-re
 const timelineEvents = [
   {
     id: 1,
-    time: "10.00 AM",
+    time: "09:05 AM",
     description: "Groom enters the Poruwa Location",
     icon: Diamond,
     active: true,
   },
   {
     id: 2,
-    time: "10.20 AM",
+    time: "09.10 AM",
     description: "Bride enters the Poruwa Location",
     icon: Bell,
     active: true,
   },
   {
     id: 3,
-    time: "10:31 PM",
+    time: "10:30 AM",
     description: "Poruwa Ceremony",
     icon: Scroll,
     active: true,

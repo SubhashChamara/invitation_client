@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { Heart, Sparkles, Crown } from "lucide-react";
 
-export default function ThankYouSection() {
+export default function ThankYouSection({ eventType }: { eventType?: string }) {
   return (
     <section className="relative w-full min-h-[80vh] flex flex-col justify-center items-center text-center overflow-hidden py-32 px-6 mt-12">
       {/* Background Image & Warm Overlay */}
@@ -15,8 +15,12 @@ export default function ThankYouSection() {
           fill 
           className="object-cover object-center" 
         />
-        {/* A rich, warm, golden-brown gradient overlay matching the screenshot */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#804e28]/95 via-[#633b1b]/95 to-[#38200d]/95" />
+        {/* A rich, warm, golden-brown or burgundy gradient overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-b transition-all duration-500 ${
+          eventType === "homecoming" 
+            ? "from-[#5c0612]/95 via-[#4a040b]/95 to-[#2d0206]/95" 
+            : "from-[#804e28]/95 via-[#633b1b]/95 to-[#38200d]/95"
+        }`} />
       </div>
 
       {/* Content */}
@@ -44,7 +48,7 @@ export default function ThankYouSection() {
 
         {/* Subtext */}
         <p className="text-lg sm:text-xl font-sans font-light tracking-wide leading-relaxed text-white/90 px-2 sm:px-6">
-          Thank you for being part of our love story. Your presence will make our wedding day absolutely perfect.
+          Thank you for being part of our love story. Your presence will make our {eventType === "homecoming" ? "homecoming celebration" : "wedding day"} absolutely perfect.
         </p>
 
         {/* Floating Crown Icon at Bottom Right */}
@@ -54,7 +58,9 @@ export default function ThankYouSection() {
       </motion.div>
       
       {/* Silhouette styling hint (simulated on mobile if the photo doesn't have one natively) */}
-      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#2a1708] to-transparent z-0" />
+      <div className={`absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t transition-all duration-500 z-0 ${
+        eventType === "homecoming" ? "from-[#1c0104]" : "from-[#2a1708]"
+      } to-transparent`} />
     </section>
   );
 }

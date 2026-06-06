@@ -76,18 +76,16 @@ export default function ThankYouPage() {
             <div className="flex-1 h-[1px] bg-[#c5a059]/40" />
           </div>
 
-          <h1 className="text-[13px] sm:text-[13px] font-sans font-bold tracking-[0.55em] text-[#2c2c2c] uppercase mb-1">
+          <h1 
+            className="text-[13px] sm:text-[13px] font-serif font-bold tracking-[0.55em] text-[#2c2c2c] uppercase mb-1"
+            style={{ fontFamily: '"Times New Roman", Times, serif' }}
+          >
             Thank You
           </h1>
           <p className="text-[9px] sm:text-[9px] font-sans font-medium tracking-[0.45em] text-[#c5a059] uppercase">
             Our Wedding Day
           </p>
 
-          {/* Thank you message */}
-          <p className="font-serif text-[12px] sm:text-[13px] italic text-[#2c2c2c]/55 mt-3 px-2 sm:px-4 text-center leading-relaxed tracking-wide max-w-xs">
-            We are deeply grateful for your love, blessings, and
-            presence that made our special day truly unforgettable.
-          </p>
 
           {/* Bottom rule */}
           <div className="w-full flex items-center gap-3 mt-4">

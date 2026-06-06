@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
 
-export default function Countdown({ targetDate }: { targetDate: string }) {
+export default function Countdown({ targetDate, eventType }: { targetDate: string; eventType?: string }) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -67,11 +67,15 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
         </h2>
 
         <div className="flex items-center justify-center gap-3 text-charcoal/60 mb-12">
-          <Heart className="w-4 h-4 fill-charcoal/10" />
+          <Heart className={`w-4 h-4 ${
+            eventType === "homecoming" ? "text-burgundy fill-burgundy/10" : "fill-charcoal/10"
+          }`} />
           <span className="font-sans text-sm tracking-widest uppercase">
             Our special day is almost here
           </span>
-          <Heart className="w-4 h-4 fill-charcoal/10" />
+          <Heart className={`w-4 h-4 ${
+            eventType === "homecoming" ? "text-burgundy fill-burgundy/10" : "fill-charcoal/10"
+          }`} />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
