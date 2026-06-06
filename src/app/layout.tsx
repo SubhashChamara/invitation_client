@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable} ${cormorant.variable} ${pinyon.variable} h-full antialiased`}>
   <head>
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" href="favicon.ico?v=2" />
   </head>
   <body className="font-sans min-h-full flex flex-col bg-sand text-charcoal selection:bg-gold selection:text-navy">
     {children}
