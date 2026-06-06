@@ -20,7 +20,7 @@ const pinyon = Pinyon_Script({
 });
 
 export const metadata: Metadata = {
-  title: "A Night to Remember | Wedding Invitation",
+  title: "A Day to Remember | Wedding Invitation",
   description: "Join us for an elegant celebration of love.",
 };
 
@@ -30,13 +30,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${montserrat.variable} ${cormorant.variable} ${pinyon.variable} h-full antialiased`}
-    >
-      <body className="font-sans min-h-full flex flex-col bg-sand text-charcoal selection:bg-gold selection:text-navy">
-        {children}
-      </body>
-    </html>
+    <html lang="en" className={`${montserrat.variable} ${cormorant.variable} ${pinyon.variable} h-full antialiased`}>
+  <head>
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body className="font-sans min-h-full flex flex-col bg-sand text-charcoal selection:bg-gold selection:text-navy">
+    {children}
+  </body>
+</html>
   );
 }
