@@ -39,9 +39,9 @@ export const HOMECOMING_VENUE_HALL = "Ballrooom";
 export const HOMECOMING_VENUE_COORDINATES: [number, number] = [6.009626010731537, 80.82519194964494];   
 
 // Backend API URL
-// export const API_BASE_URL = "https://api.oshanisubhash.online";
-export const API_BASE_URL = "http://localhost:8585";
+export const API_BASE_URL = "https://api.oshanisubhash.online";
+// export const API_BASE_URL = "http://localhost:8585";
 
 // Frontend URL for guest links and QR codes
-// export const FRONTEND_URL = "https://oshanisubhash.online";
-export const FRONTEND_URL = "http://localhost:3000";
+export const FRONTEND_URL = "https://oshanisubhash.online";
+// export const FRONTEND_URL = "http://localhost:3000";
