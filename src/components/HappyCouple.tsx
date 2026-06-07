@@ -66,7 +66,7 @@ export default function HappyCouple({ eventType }: { eventType?: string }) {
 
             {/* Floating Crown Badge */}
             <div className={`absolute top-2 -right-2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float transition-colors duration-500 ${
-              eventType === "homecoming" ? "bg-rose-gold" : "bg-[#b89e95]"
+              eventType === "homecoming" ? "bg-red-800" : "bg-[#b89e95]"
             }`}>
               <Crown className="w-5 h-5" />
             </div>
@@ -103,7 +103,7 @@ export default function HappyCouple({ eventType }: { eventType?: string }) {
 
             {/* Floating Crown Badge */}
             <div className={`absolute top-2 -right-2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float transition-colors duration-500 ${
-              eventType === "homecoming" ? "bg-burgundy shadow-burgundy/15" : "bg-navy"
+              eventType === "homecoming" ? "bg-red-800 shadow-red-800/15" : "bg-navy"
             }`}>
               <Crown className="w-5 h-5" />
             </div>

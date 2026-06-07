@@ -39,7 +39,7 @@ export default function EventCards({
       >
         {/* Top Icon Badge */}
         <div className={`w-16 h-16 rounded-full flex items-center justify-center text-white mb-8 shadow-inner transition-colors duration-500 ${
-          eventType === "homecoming" ? "bg-burgundy" : "bg-[#b89e95]"
+          eventType === "homecoming" ? "bg-red-800" : "bg-[#b89e95]"
         }`}>
           <Scroll className="w-8 h-8 stroke-[1.5]" />
         </div>
@@ -70,7 +70,7 @@ export default function EventCards({
           onClick={onLocationClick}
           className={`w-full text-white py-4 rounded-full font-bold uppercase tracking-[0.15em] text-xs sm:text-sm flex items-center justify-center gap-3 shadow-md transition-all active:scale-[0.98] ${
             eventType === "homecoming" 
-              ? "bg-burgundy hover:bg-crimson-luxury shadow-burgundy/25" 
+              ? "bg-red-800 hover:bg-crimson-luxury shadow-burgundy/25" 
               : "bg-gold hover:bg-gold-light shadow-gold/20"
           }`}
         >

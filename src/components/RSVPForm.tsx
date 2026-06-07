@@ -123,7 +123,7 @@ export default function RSVPForm({
             />
             {/* Floating music badge */}
             <div className={`absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-colors duration-500 ${
-              eventType === "homecoming" ? "bg-burgundy shadow-burgundy/20" : "bg-gold"
+              eventType === "homecoming" ? "text-red-800 fill-red-800/10" : "bg-gold"
             }`}>
                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
             </div>
@@ -135,14 +135,14 @@ export default function RSVPForm({
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="relative w-full bg-white rounded-[24px] shadow-lg border border-charcoal/5 p-6 sm:p-8 -mt-20 z-20"
+            className={`relative w-full ${eventType === "homecoming" ? "bg-red-100" : "bg-sand-light"} rounded-[24px] shadow-lg border border-charcoal/5 p-6 sm:p-8 -mt-20 z-20`}
           >
             <div className="flex items-center justify-center lg:justify-start gap-2 mb-4">
               <Heart className="w-5 h-5 text-charcoal stroke-[2]" />
               <h3 className="font-serif text-lg font-bold text-charcoal">Save the Date!</h3>
             </div>
             <p className="text-charcoal/70 text-sm leading-relaxed font-sans text-center lg:text-left">
-              Your presence will make our {eventType === "homecoming" ? "homecoming" : "wedding day"} complete. We're so excited to celebrate this special moment with you!
+              Your presence will make our {eventType === "homecoming" ? "homecoming party" : "wedding day"} complete. We're so excited to celebrate this special moment with you!
             </p>
           </motion.div>
         </div>
@@ -157,16 +157,14 @@ export default function RSVPForm({
         >
         {isSuccess ? (
           <div className="bg-sand-light p-12 rounded-[32px] text-center shadow-sm border border-charcoal/5">
-            <CheckCircle2 className={`w-16 h-16 mx-auto mb-6 transition-colors duration-500 ${
-              eventType === "homecoming" ? "text-burgundy" : "text-gold"
-            }`} />
+            <CheckCircle2 className={`w-16 h-16 mx-auto mb-6 transition-colors duration-500 text-green-500`} />
             <h3 className="font-serif text-3xl text-charcoal mb-4">Thank You!</h3>
             <p className="text-charcoal/70 mb-8">Your response has been securely recorded. We look forward to seeing you.</p>
             <button 
               onClick={() => { setIsSuccess(false); setIsEditing(true); }}
               className={`font-bold uppercase tracking-widest text-xs border-b pb-1 transition-all ${
                 eventType === "homecoming" 
-                  ? "text-burgundy border-burgundy hover:text-crimson-luxury hover:border-crimson-luxury" 
+                  ? "text-red-800 border-red-800 hover:text-crimson-luxury hover:border-crimson-luxury" 
                   : "text-gold border-gold hover:text-gold-light hover:border-gold-light"
               }`}
             >
@@ -188,7 +186,7 @@ export default function RSVPForm({
                onClick={() => setIsEditing(true)}
                className={`flex items-center gap-2 text-white px-8 py-4 rounded-full transition-all shadow-md active:scale-[0.98] text-sm uppercase tracking-widest ${
                  eventType === "homecoming" 
-                   ? "bg-burgundy hover:bg-crimson-luxury shadow-burgundy/25" 
+                   ? "bg-red-800 hover:bg-crimson-luxury shadow-red-800/25" 
                    : "bg-gold hover:bg-gold-light shadow-gold/20"
                }`}
             >
@@ -198,7 +196,7 @@ export default function RSVPForm({
           </div>
         ) : (
           <form onSubmit={handleSubmit} className={`p-8 sm:p-10 rounded-[32px] shadow-sm border transition-colors duration-500 ${
-            eventType === "homecoming" ? "bg-blush border-burgundy/5" : "bg-[#f2efe9] border-charcoal/5"
+            eventType === "homecoming" ? "bg-blush border-red-800/5" : "bg-[#f2efe9] border-charcoal/5"
           }`}>
             
             {error && (
@@ -273,7 +271,7 @@ export default function RSVPForm({
                   disabled={!status || isSubmitting}
                   className={`w-full text-white font-bold py-4 rounded-full transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-sm uppercase tracking-widest ${
                     eventType === "homecoming" 
-                      ? "bg-burgundy hover:bg-crimson-luxury shadow-burgundy/25" 
+                      ? "bg-red-800 hover:bg-red-700 shadow-red-800/25" 
                       : "bg-gold hover:bg-gold-light shadow-gold/20"
                   }`}
                 >

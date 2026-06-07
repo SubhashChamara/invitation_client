@@ -28,7 +28,7 @@ export default function ThankYouPage() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(API_BASE_URL+"/api/thanks-image", { signal: controller.signal })
+    fetch(API_BASE_URL + "/api/thanks-image", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error("Not found");
         return res.blob();
@@ -67,6 +67,11 @@ export default function ThankYouPage() {
           sm:shadow-[0_12px_64px_rgba(0,0,0,0.15)]
         "
       >
+        {/* Google Font link for Great Vibes */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+          rel="stylesheet"
+        />
         {/* ── TOP HEADER ── */}
         <div className="flex flex-col items-center pt-8 pb-5 px-6 sm:pt-7 sm:pb-5">
           {/* Top rule */}
@@ -76,7 +81,7 @@ export default function ThankYouPage() {
             <div className="flex-1 h-[1px] bg-[#c5a059]/40" />
           </div>
 
-          <h1 
+          <h1
             className="text-[13px] sm:text-[13px] font-serif font-bold tracking-[0.55em] text-[#2c2c2c] uppercase mb-1"
             style={{ fontFamily: '"Times New Roman", Times, serif' }}
           >
@@ -157,7 +162,7 @@ export default function ThankYouPage() {
 
             {/* Date — left */}
             <div className="flex flex-col items-start">
-              
+
               <span className="text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.12em] text-[#2c2c2c] uppercase">
                 {shortDate}
               </span>
@@ -166,13 +171,15 @@ export default function ThankYouPage() {
             {/* Couple Names — centre */}
             <div className="flex flex-col items-center">
               <div className="w-[1px] h-3 bg-[#c5a059]/40 mb-2" />
-              <p className="font-script text-[24px] sm:text-[28px] text-[#2c2c2c] leading-none text-center">
+              <p className="text-5xl sm:text-4xl text-charcoal font-normal tracking-normal leading-tight"
+                style={{ fontFamily: "'Great Vibes', cursive" }}>
                 {BRIDE_NAME}
               </p>
-              <p className="text-[7px] font-sans tracking-[0.35em] text-[#c5a059] uppercase my-1">
+              <p className="text-[10px] font-sans tracking-[0.35em] text-[#c5a059] uppercase my-1">
                 &amp;
               </p>
-              <p className="font-script text-[24px] sm:text-[28px] text-[#2c2c2c] leading-none text-center">
+              <p className="text-5xl sm:text-4xl text-charcoal font-normal tracking-normal leading-tight"
+                style={{ fontFamily: "'Great Vibes', cursive" }}>
                 {GROOM_NAME}
               </p>
               <div className="w-[1px] h-3 bg-[#c5a059]/40 mt-2" />
@@ -180,7 +187,7 @@ export default function ThankYouPage() {
 
             {/* Venue — right */}
             <div className="flex flex-col items-end text-right">
-              
+
               <span className="text-[10px] sm:text-[11px] font-sans font-semibold tracking-[0.08em] text-[#2c2c2c] uppercase leading-snug">
                 {VENUE_HOTEL}
               </span>

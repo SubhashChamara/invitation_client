@@ -91,7 +91,7 @@ export default function HomecomingInviteContainer({ guestSlug }: { guestSlug: st
 
   if (loading) {
     return (
-      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-sand-light">
+      <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-red-200">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}

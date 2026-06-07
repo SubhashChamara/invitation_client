@@ -30,7 +30,7 @@ export default function FindYourSeat({ guest, eventType }: { guest: GuestSeatInf
           eventType === "homecoming" ? "border-burgundy/10 shadow-burgundy/5" : "border-charcoal/5"
         }`}>
           <UtensilsCrossed className={`w-8 h-8 stroke-1 transition-colors duration-500 ${
-            eventType === "homecoming" ? "text-burgundy" : "text-charcoal/80"
+            eventType === "homecoming" ? "text-red-800" : "text-charcoal/80"
           }`} />
         </div>
 
@@ -55,7 +55,7 @@ export default function FindYourSeat({ guest, eventType }: { guest: GuestSeatInf
               <div className="flex flex-col items-center">
                 <span className="text-xs uppercase tracking-[0.2em] text-charcoal/40 font-bold mb-1">Table</span>
                 <span className={`text-2xl font-serif transition-colors duration-500 ${
-                  eventType === "homecoming" ? "text-burgundy" : "text-charcoal"
+                  eventType === "homecoming" ? "text-red-800" : "text-charcoal"
                 }`}>{guest.table}</span>
               </div>
               
@@ -64,7 +64,7 @@ export default function FindYourSeat({ guest, eventType }: { guest: GuestSeatInf
               <div className="flex flex-col items-center">
                 <span className="text-xs uppercase tracking-[0.2em] text-charcoal/40 font-bold mb-1">Seat</span>
                 <span className={`text-2xl font-serif transition-colors duration-500 ${
-                  eventType === "homecoming" ? "text-burgundy" : "text-charcoal"
+                  eventType === "homecoming" ? "text-red-800" : "text-charcoal"
                 }`}>{guest.seat}</span>
               </div>
             </>

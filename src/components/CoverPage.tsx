@@ -22,7 +22,7 @@ export default function CoverPage({
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, y: -50 }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-sand-light p-4"
+      className={`fixed inset-0 z-50 flex items-center justify-center ${eventType === "homecoming" ? "bg-red-200" : "bg-sand-light"} p-4`}
     >
       {/* Google Font link for Great Vibes */}
       <link
@@ -30,10 +30,10 @@ export default function CoverPage({
         rel="stylesheet"
       />
 
-      <div className="relative w-full max-w-sm sm:max-w-md aspect-[3/5] bg-sand shadow-2xl rounded-sm overflow-hidden flex flex-col items-center justify-center text-charcoal text-center px-8 border border-black/5">
+      <div className={`relative w-full max-w-sm sm:max-w-md aspect-[3/5] ${eventType === "homecoming" ? "bg-red-100" : "bg-sand"} shadow-2xl rounded-sm overflow-hidden flex flex-col items-center justify-center text-charcoal text-center px-8 border border-black/5`}>
 
         {/* Top Left Decorative Pattern */}
-        <div className="absolute top-0 left-0 w-32 h-32 opacity-60 text-gold-light">
+        <div className={`absolute top-0 left-0 w-32 h-32 opacity-60 ${eventType === "homecoming" ? "text-red-600" : "text-gold-light"}`}>
           <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0C55.2285 0 100 44.7715 100 100H0V0Z" fill="currentColor" opacity="0.3" />
             <path d="M0 0C44.1828 0 80 35.8172 80 80H0V0Z" fill="currentColor" opacity="0.5" />
@@ -69,33 +69,33 @@ export default function CoverPage({
 
           {/* Middle Section: Couple Names (Exact image_fe9aef.png style) */}
           <div className="flex flex-col items-center justify-center my-auto py-2">
-            
+
             {/* Bride Name */}
-            <h1 
-              className="text-5xl sm:text-6xl text-charcoal font-normal tracking-normal leading-tight" 
+            <h1
+              className="text-5xl sm:text-6xl text-charcoal font-normal tracking-normal leading-tight"
               style={{ fontFamily: "'Great Vibes', cursive" }}
             >
               {BRIDE_NAME}
             </h1>
-            
+
             {/* Ampersand (&) */}
             <span className="text-2xl my-1 font-serif italic text-charcoal/50">&</span>
-            
+
             {/* Groom Name */}
-            <h1 
-              className="text-5xl sm:text-6xl text-charcoal font-normal tracking-normal leading-tight" 
+            <h1
+              className="text-5xl sm:text-6xl text-charcoal font-normal tracking-normal leading-tight"
               style={{ fontFamily: "'Great Vibes', cursive" }}
             >
               {GROOM_NAME}
             </h1>
-            
+
           </div>
 
           {/* Bottom Section: Button */}
           <div className="flex flex-col items-center justify-end pb-4">
             <button
               onClick={onOpen}
-              className="px-8 py-4 rounded-full bg-gold text-white text-xs sm:text-sm font-bold uppercase tracking-[0.25em] hover:bg-gold-light transition-all duration-300 active:scale-95 shadow-md shadow-gold/20"
+              className={eventType === "homecoming" ? "px-8 py-4 rounded-full bg-red-800 text-white text-xs sm:text-sm font-bold uppercase tracking-[0.25em] hover:bg-red-700 transition-all duration-300 active:scale-95 shadow-md shadow-red-800/20" : "px-8 py-4 rounded-full bg-gold text-white text-xs sm:text-sm font-bold uppercase tracking-[0.25em] hover:bg-gold-light transition-all duration-300 active:scale-95 shadow-md shadow-gold/20"}
             >
               View Invitation
             </button>
@@ -104,7 +104,7 @@ export default function CoverPage({
         </div>
 
         {/* Bottom Right Decorative Pattern */}
-        <div className="absolute bottom-0 right-0 w-32 h-32 opacity-60 text-gold-light transform rotate-180">
+        <div className={`absolute bottom-0 right-0 w-32 h-32 opacity-60 ${eventType === "homecoming" ? "text-red-600" : "text-gold-light"} transform rotate-180`}>
           <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 0C55.2285 0 100 44.7715 100 100H0V0Z" fill="currentColor" opacity="0.3" />
             <path d="M0 0C44.1828 0 80 35.8172 80 80H0V0Z" fill="currentColor" opacity="0.5" />

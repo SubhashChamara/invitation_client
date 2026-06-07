@@ -41,7 +41,7 @@ export default function HeroSection({
 
   const toggleMusic = () => {
     if (!audioRef.current) return;
-    
+
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -52,12 +52,16 @@ export default function HeroSection({
 
   return (
     <section className="relative w-full h-[100dvh] bg-charcoal overflow-hidden flex flex-col items-center justify-center">
-      
-      {/* Hero background music */}
-      <audio ref={audioRef} src="/music.mp3?v=3" loop style={{ display: "none" }} />
-      
+
+      {/* YouTube background music (autoplay, loop, muted) */}
+      <iframe
+        src="https://www.youtube.com/embed/rtOvBOTyX00?autoplay=1&loop=1&playlist=rtOvBOTyX00&mute=0"
+        allow="autoplay"
+        style={{ position: "absolute", width: 0, height: 0, border: "none" }}
+      ></iframe>
+
       {/* Cinematic Background Image */}
-      <Image 
+      <Image
         src="/couple.png"
         alt="The Happy Couple"
         fill
@@ -70,7 +74,7 @@ export default function HeroSection({
 
       {/* Content wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-4 text-white text-center">
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -99,7 +103,7 @@ export default function HeroSection({
           <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg mt-2 mb-6">
             {groomName}
           </h1>
-          
+
           <p className="text-sm sm:text-base font-serif italic tracking-widest text-white/80 mt-4 drop-shadow-md">
             {weddingDate}
           </p>
@@ -107,7 +111,7 @@ export default function HeroSection({
       </div>
 
       {/* Bottom Interface Elements */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 1.5 }}
@@ -130,22 +134,20 @@ export default function HeroSection({
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 1.5 }}
         onClick={toggleMusic}
-        className={`absolute bottom-8 right-6 z-30 w-12 h-12 backdrop-blur-md rounded-full border flex items-center justify-center transition-colors ${
-          isPlaying 
-            ? (eventType === "homecoming" 
-                ? 'bg-black/40 border-burgundy/50 text-rose-gold hover:bg-black/60 shadow-lg shadow-burgundy/10' 
-                : 'bg-black/40 border-gold/50 text-gold-light hover:bg-black/60') 
+        className={`absolute bottom-8 right-6 z-30 w-12 h-12 backdrop-blur-md rounded-full border flex items-center justify-center transition-colors ${isPlaying
+            ? (eventType === "homecoming"
+              ? 'bg-black/40 border-burgundy/50 text-rose-gold hover:bg-black/60 shadow-lg shadow-burgundy/10'
+              : 'bg-black/40 border-gold/50 text-gold-light hover:bg-black/60')
             : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-        }`}
+          }`}
       >
         {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
         {isPlaying && (
-          <span className={`absolute -top-1 -right-1 w-3 h-3 rounded-full animate-ping ${
-            eventType === "homecoming" ? "bg-rose-gold" : "bg-gold-light"
-          }`} />
+          <span className={`absolute -top-1 -right-1 w-3 h-3 rounded-full animate-ping ${eventType === "homecoming" ? "bg-rose-gold" : "bg-gold-light"
+            }`} />
         )}
       </motion.button>
-      
+
     </section>
   );
 }

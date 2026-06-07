@@ -68,13 +68,13 @@ export default function Countdown({ targetDate, eventType }: { targetDate: strin
 
         <div className="flex items-center justify-center gap-3 text-charcoal/60 mb-12">
           <Heart className={`w-4 h-4 ${
-            eventType === "homecoming" ? "text-burgundy fill-burgundy/10" : "fill-charcoal/10"
+            eventType === "homecoming" ? "text-red-800 fill-red-800/10" : "fill-charcoal/10"
           }`} />
           <span className="font-sans text-sm tracking-widest uppercase">
             Our special day is almost here
           </span>
           <Heart className={`w-4 h-4 ${
-            eventType === "homecoming" ? "text-burgundy fill-burgundy/10" : "fill-charcoal/10"
+            eventType === "homecoming" ? "text-red-800 fill-red-800/10" : "fill-charcoal/10"
           }`} />
         </div>
 

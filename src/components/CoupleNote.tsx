@@ -20,12 +20,12 @@ export default function CoupleNote({ eventType }: { eventType?: string }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8 }}
-        className="w-full max-w-3xl bg-sand-light rounded-[40px] shadow-sm relative flex flex-col items-center px-6 sm:px-12 py-16 text-center"
+        className={`w-full max-w-3xl  ${eventType === "homecoming" ? "bg-red-100" : "bg-sand"} rounded-[40px] shadow-sm relative flex flex-col items-center px-6 sm:px-12 py-16 text-center`}
       >
         {/* The heart icon */}
         <div className="mb-6 mt-2">
           <Heart className={`w-8 h-8 stroke-[2] transition-colors duration-500 ${
-            eventType === "homecoming" ? "text-burgundy fill-burgundy/5" : "text-charcoal"
+            eventType === "homecoming" ? "text-red-800 fill-burgundy/5" : "text-charcoal"
           }`} />
         </div>
 
