@@ -75,7 +75,7 @@ export default function CoverPage({
               className="text-5xl sm:text-6xl text-charcoal font-normal tracking-normal leading-tight"
               style={{ fontFamily: "'Great Vibes', cursive" }}
             >
-              {BRIDE_NAME}
+              {eventType === "homecoming" ? GROOM_NAME : BRIDE_NAME}
             </h1>
 
             {/* Ampersand (&) */}
@@ -86,7 +86,7 @@ export default function CoverPage({
               className="text-5xl sm:text-6xl text-charcoal font-normal tracking-normal leading-tight"
               style={{ fontFamily: "'Great Vibes', cursive" }}
             >
-              {GROOM_NAME}
+              {eventType === "homecoming" ? BRIDE_NAME : GROOM_NAME}
             </h1>
 
           </div>

@@ -5,17 +5,17 @@
 export const BRIDE_NAME = "Oshani";
 export const BRIDE_FULL_NAME = "Oshani Herath";
 export const BRIDE_ROLE = "The Bride";
-export const BRIDE_PARENTS = "Daughter of Mr and Mrs.Herath";
+export const BRIDE_PARENTS = "Daughter of Mr and Mrs.Jayasekara";
 
 export const GROOM_NAME = "Subhash";
-export const GROOM_FULL_NAME = "Subhash Chamara Udayanga";
+export const GROOM_FULL_NAME = "Subhash Chamara";
 export const GROOM_ROLE = "The Groom";
 export const GROOM_PARENTS = "Son of Mr and Mrs. Amaradasa";
 
 export const COUPLE_NAMES = `${BRIDE_NAME} & ${GROOM_NAME}`;
 
 // Full wedding date for countdown calculation
-export const WEDDING_DATE_ISO = "2026-08-26T09:05:00"; 
+export const WEDDING_DATE_ISO = "2026-08-26T09:05:00";
 
 // Formatted strings for UI display
 export const WEDDING_DATE_DISPLAY = "Wednesday, August 26, 2026";
@@ -36,7 +36,7 @@ export const HOMECOMING_TIME_DISPLAY = "05:10 PM";
 export const HOMECOMING_VENUE_NAME = "The Grand Manali, Tangalle";
 export const HOMECOMING_VENUE_HOTEL = "The Grand Manali";
 export const HOMECOMING_VENUE_HALL = "Ballrooom";
-export const HOMECOMING_VENUE_COORDINATES: [number, number] = [6.05991, 80.83013];   
+export const HOMECOMING_VENUE_COORDINATES: [number, number] = [6.05991, 80.83013];
 
 // Backend API URL
 export const API_BASE_URL = "https://api.oshanisubhash.online";

@@ -95,13 +95,13 @@ export default function HeroSection({
           className="flex flex-col items-center"
         >
           <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg">
-            {brideName}
+            {eventType === "homecoming" ? groomName : brideName}
           </h1>
           <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg">
             &
           </h1>
           <h1 className="text-3xl sm:text-7xl lg:text-8xl font-serif tracking-wide font-light drop-shadow-lg mt-2 mb-6">
-            {groomName}
+            {eventType === "homecoming" ? brideName : groomName}
           </h1>
 
           <p className="text-sm sm:text-base font-serif italic tracking-widest text-white/80 mt-4 drop-shadow-md">

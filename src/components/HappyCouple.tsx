@@ -1,8 +1,6 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { Crown } from "lucide-react";
 import {
   BRIDE_FULL_NAME,
   GROOM_FULL_NAME,
@@ -41,80 +39,76 @@ export default function HappyCouple({ eventType }: { eventType?: string }) {
       </motion.div>
 
       {/* Profiles Container */}
-      <div className="flex flex-col md:flex-row items-center justify-center gap-20 md:gap-16 max-w-5xl w-full">
+      <div className="flex flex-col md:flex-row items-center justify-center gap-20 md:gap-32 max-w-5xl w-full">
+        {eventType === "homecoming" ? (
+          <>
+            {/* Groom Profile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="flex flex-col items-center"
+            >
+              <h3 className="text-3xl sm:text-4xl font-serif text-charcoal">{GROOM_FULL_NAME}</h3>
 
-        {/* Bride Profile */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex flex-col items-center"
-        >
-          <div className="relative w-64 h-64 sm:w-72 sm:h-72 mb-8">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-charcoal/5 to-transparent blur-md shadow-2xl" />
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <p className="text-charcoal/70 font-serif text-[17px]">{GROOM_ROLE}</p>
+                <p className="text-charcoal/60 font-serif text-sm">{GROOM_PARENTS}</p>
+              </div>
+            </motion.div>
 
-            {/* The circular image wrapper */}
-            <div className="relative w-full h-full rounded-full border-8 border-white overflow-hidden shadow-xl">
-              <Image
-                src="/couple.jpg" // Replace with /bride.jpg when available
-                alt="The Bride"
-                fill
-                className="object-cover object-[center_30%]"
-              />
-            </div>
+            {/* Bride Profile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col items-center mt-12 md:mt-0"
+            >
+              <h3 className="text-3xl sm:text-4xl font-serif text-charcoal">{BRIDE_FULL_NAME}</h3>
 
-            {/* Floating Crown Badge */}
-            <div className={`absolute top-2 -right-2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float transition-colors duration-500 ${eventType === "homecoming" ? "bg-red-800" : "bg-[#b89e95]"
-              }`}>
-              <Crown className="w-5 h-5" />
-            </div>
-          </div>
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <p className="text-charcoal/70 font-serif text-[17px]">{BRIDE_ROLE}</p>
+                <p className="text-charcoal/60 font-serif text-sm">{BRIDE_PARENTS}</p>
+              </div>
+            </motion.div>
+          </>
+        ) : (
+          <>
+            {/* Bride Profile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="flex flex-col items-center"
+            >
+              <h3 className="text-3xl sm:text-4xl font-serif text-charcoal">{BRIDE_FULL_NAME}</h3>
 
-          <h3 className="text-3xl font-serif text-charcoal">{BRIDE_FULL_NAME}</h3>
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <p className="text-charcoal/70 font-serif text-[17px]">{BRIDE_ROLE}</p>
+                <p className="text-charcoal/60 font-serif text-sm">{BRIDE_PARENTS}</p>
+              </div>
+            </motion.div>
 
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <p className="text-charcoal/70 font-serif text-[17px]">{BRIDE_ROLE}</p>
-            <p className="text-charcoal/60 font-serif text-sm">{BRIDE_PARENTS}</p>
-          </div>
-        </motion.div>
+            {/* Groom Profile */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="flex flex-col items-center mt-12 md:mt-0"
+            >
+              <h3 className="text-3xl sm:text-4xl font-serif text-charcoal">{GROOM_FULL_NAME}</h3>
 
-        {/* Groom Profile */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="flex flex-col items-center mt-12 md:mt-0"
-        >
-          <div className="relative w-64 h-64 sm:w-72 sm:h-72 mb-8">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-charcoal/5 to-transparent blur-md shadow-2xl" />
-
-            {/* The circular image wrapper */}
-            <div className="relative w-full h-full rounded-full border-8 border-white overflow-hidden shadow-xl">
-              <Image
-                src="/couple.jpg" // Replace with /groom.jpg when available
-                alt="The Groom"
-                fill
-                className="object-cover object-[center_30%]"
-              />
-            </div>
-
-            {/* Floating Crown Badge */}
-            <div className={`absolute top-2 -right-2 w-12 h-12 rounded-full flex items-center justify-center shadow-lg border-2 border-white text-white z-10 animate-float transition-colors duration-500 ${eventType === "homecoming" ? "bg-red-800 shadow-red-800/15" : "bg-navy"
-              }`}>
-              <Crown className="w-5 h-5" />
-            </div>
-          </div>
-
-          <h3 className="text-3xl font-serif text-charcoal">{GROOM_FULL_NAME}</h3>
-
-          <div className="mt-4 flex flex-col items-center gap-2">
-            <p className="text-charcoal/70 font-serif text-[17px]">{GROOM_ROLE}</p>
-            <p className="text-charcoal/60 font-serif text-sm">{GROOM_PARENTS}</p>
-          </div>
-        </motion.div>
-
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <p className="text-charcoal/70 font-serif text-[17px]">{GROOM_ROLE}</p>
+                <p className="text-charcoal/60 font-serif text-sm">{GROOM_PARENTS}</p>
+              </div>
+            </motion.div>
+          </>
+        )}
       </div>
     </section>
   );

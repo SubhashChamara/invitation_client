@@ -157,14 +157,14 @@ export default function HomecomingThankYouPage() {
               <div className="w-[1px] h-3 bg-[#c5a059]/40 mb-2" />
               <p className="text-5xl sm:text-4xl text-charcoal font-normal tracking-normal leading-tight"
                 style={{ fontFamily: "'Great Vibes', cursive" }}>
-                {BRIDE_NAME}
+                {GROOM_NAME}
               </p>
               <p className="text-[10px] font-sans tracking-[0.35em] text-[#c5a059] uppercase my-1">
                 &amp;
               </p>
               <p className="text-5xl sm:text-4xl text-charcoal font-normal tracking-normal leading-tight"
                 style={{ fontFamily: "'Great Vibes', cursive" }}>
-                {GROOM_NAME}
+                {BRIDE_NAME}
               </p>
               <div className="w-[1px] h-3 bg-[#c5a059]/40 mt-2" />
             </div>
