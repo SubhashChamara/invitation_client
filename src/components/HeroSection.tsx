@@ -53,12 +53,12 @@ export default function HeroSection({
   return (
     <section className="relative w-full h-[100dvh] bg-charcoal overflow-hidden flex flex-col items-center justify-center">
 
-      {/* YouTube background music (autoplay, loop, muted) */}
-      <iframe
-        src="https://www.youtube.com/embed/rtOvBOTyX00?autoplay=1&loop=1&playlist=rtOvBOTyX00&mute=0"
-        allow="autoplay"
-        style={{ position: "absolute", width: 0, height: 0, border: "none" }}
-      ></iframe>
+      {/* Background music */}
+      <audio
+        ref={audioRef}
+        src="/music.mp3"
+        loop
+      />
 
       {/* Cinematic Background Image */}
       <Image
@@ -73,13 +73,13 @@ export default function HeroSection({
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10 z-0" />
 
       {/* Content wrapper */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full w-full px-4 text-white text-center">
+      <div className="relative z-10 flex flex-col items-center justify-start pt-36 sm:pt-48 h-full w-full px-4 text-white text-center">
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="glass border border-white/20 rounded-full px-6 py-2.5 flex items-center justify-center gap-3 backdrop-blur-sm mb-8"
+          className="absolute top-16 sm:top-24 glass border border-white/20 rounded-full px-6 py-2.5 flex items-center justify-center gap-3 backdrop-blur-sm"
         >
           <Bell className="w-4 h-4 text-white/80" />
           <span className="text-xs sm:text-sm font-sans tracking-[0.25em] uppercase text-white/90">
