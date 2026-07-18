@@ -62,10 +62,10 @@ export default function HeroSection({
 
       {/* Cinematic Background Image */}
       <Image
-        src="/couple.png"
+        src="/couple-2.JPG"
         alt="The Happy Couple"
         fill
-        className="object-cover opacity-80"
+        className="object-cover object-[center_45%] opacity-70"
         priority
       />
 
@@ -135,10 +135,10 @@ export default function HeroSection({
         transition={{ duration: 0.5, delay: 1.5 }}
         onClick={toggleMusic}
         className={`absolute bottom-8 right-6 z-30 w-12 h-12 backdrop-blur-md rounded-full border flex items-center justify-center transition-colors ${isPlaying
-            ? (eventType === "homecoming"
-              ? 'bg-black/40 border-burgundy/50 text-rose-gold hover:bg-black/60 shadow-lg shadow-burgundy/10'
-              : 'bg-black/40 border-gold/50 text-gold-light hover:bg-black/60')
-            : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
+          ? (eventType === "homecoming"
+            ? 'bg-black/40 border-burgundy/50 text-rose-gold hover:bg-black/60 shadow-lg shadow-burgundy/10'
+            : 'bg-black/40 border-gold/50 text-gold-light hover:bg-black/60')
+          : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
           }`}
       >
         {isPlaying ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}

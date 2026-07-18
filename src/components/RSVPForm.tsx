@@ -4,14 +4,14 @@ import { motion } from "framer-motion";
 import { Heart, Edit2, CheckCircle2 } from "lucide-react";
 import { API_BASE_URL } from "@/lib/constants";
 
-export default function RSVPForm({ 
-  guestId, 
+export default function RSVPForm({
+  guestId,
   guestName,
   initialStatus,
   initialGuestCount,
   initialMessage,
   eventType
-}: { 
+}: {
   guestId: string;
   guestName: string;
   initialStatus?: string;
@@ -79,9 +79,9 @@ export default function RSVPForm({
 
   return (
     <section className={`w-full ${eventType === "homecoming" ? "bg-[#faf9f6]" : "bg-white"} pt-12 pb-24 px-4 flex flex-col items-center relative z-10`}>
-      
+
       {/* Header and Intro */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
@@ -94,9 +94,9 @@ export default function RSVPForm({
             RSVP
           </h2>
         </div>
-        
+
         <div className="h-px w-24 bg-charcoal/20 my-4" />
-        
+
         <p className="text-charcoal/70 leading-relaxed font-sans text-[15px] sm:text-[17px] mt-4 px-2 tracking-wide font-light">
           We can't wait to celebrate with you! Please let us know if you'll be joining us on our {eventType === "homecoming" ? "homecoming" : "special day"}.
         </p>
@@ -104,7 +104,7 @@ export default function RSVPForm({
 
       {/* Main Content Layout Container */}
       <div className="flex flex-col lg:flex-row items-center lg:items-start justify-center w-full max-w-6xl gap-12 lg:gap-24 mt-12 w-full">
-        
+
         {/* Left Column: Image and Save the Date */}
         <div className="flex flex-col items-center w-full lg:w-1/2 max-w-sm">
           {/* Large Featured Image */}
@@ -115,17 +115,16 @@ export default function RSVPForm({
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative w-full aspect-[4/5] rounded-[32px] overflow-hidden border border-charcoal/5 shadow-sm"
           >
-            <Image 
-              src="/couple.png" 
-              alt="Happy Couple RSVP" 
-              fill 
-              className="object-cover object-top"
+            <Image
+              src="/couple-2.JPG"
+              alt="Happy Couple RSVP"
+              fill
+              className="object-cover object-[center_98%]"
             />
             {/* Floating music badge */}
-            <div className={`absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-colors duration-500 ${
-              eventType === "homecoming" ? "text-red-800 fill-red-800/10" : "bg-gold"
-            }`}>
-               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <div className={`absolute bottom-4 right-4 w-12 h-12 rounded-full flex items-center justify-center text-white shadow-lg transition-colors duration-500 ${eventType === "homecoming" ? "text-red-800 fill-red-800/10" : "bg-gold"
+              }`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13" /><circle cx="6" cy="18" r="3" /><circle cx="18" cy="16" r="3" /></svg>
             </div>
           </motion.div>
 
@@ -155,144 +154,140 @@ export default function RSVPForm({
           transition={{ duration: 0.8, delay: 0.4 }}
           className="w-full lg:w-1/2 max-w-lg lg:mt-8"
         >
-        {isSuccess ? (
-          <div className="bg-sand-light p-12 rounded-[32px] text-center shadow-sm border border-charcoal/5">
-            <CheckCircle2 className={`w-16 h-16 mx-auto mb-6 transition-colors duration-500 text-green-500`} />
-            <h3 className="font-serif text-3xl text-charcoal mb-4">Thank You!</h3>
-            <p className="text-charcoal/70 mb-8">Your response has been securely recorded. We look forward to seeing you.</p>
-            <button 
-              onClick={() => { setIsSuccess(false); setIsEditing(true); }}
-              className={`font-bold uppercase tracking-widest text-xs border-b pb-1 transition-all ${
-                eventType === "homecoming" 
-                  ? "text-red-800 border-red-800 hover:text-crimson-luxury hover:border-crimson-luxury" 
+          {isSuccess ? (
+            <div className="bg-sand-light p-12 rounded-[32px] text-center shadow-sm border border-charcoal/5">
+              <CheckCircle2 className={`w-16 h-16 mx-auto mb-6 transition-colors duration-500 text-green-500`} />
+              <h3 className="font-serif text-3xl text-charcoal mb-4">Thank You!</h3>
+              <p className="text-charcoal/70 mb-8">Your response has been securely recorded. We look forward to seeing you.</p>
+              <button
+                onClick={() => { setIsSuccess(false); setIsEditing(true); }}
+                className={`font-bold uppercase tracking-widest text-xs border-b pb-1 transition-all ${eventType === "homecoming"
+                  ? "text-red-800 border-red-800 hover:text-crimson-luxury hover:border-crimson-luxury"
                   : "text-gold border-gold hover:text-gold-light hover:border-gold-light"
-              }`}
-            >
-              Update RSVP
-            </button>
-          </div>
-        ) : hasRsvpAlready ? (
-          <div className="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-charcoal/10 flex flex-col items-center text-center">
-            <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${status === 'attending' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
-               <CheckCircle2 className="w-10 h-10" />
+                  }`}
+              >
+                Update RSVP
+              </button>
             </div>
-            <h3 className="font-serif text-2xl text-charcoal mb-2">You have RSVP'd</h3>
-            <p className="text-charcoal/60 mb-8 italic">
-              Status: <span className="font-bold text-charcoal non-italic">{status === 'attending' ? 'Attending' : 'Not Attending'}</span>
-              {status === 'attending' && <>, alongside <span className="font-bold text-charcoal non-italic">{guestsCount}</span> guest(s)</>}
-            </p>
-            
-            <button
-               onClick={() => setIsEditing(true)}
-               className={`flex items-center gap-2 text-white px-8 py-4 rounded-full transition-all shadow-md active:scale-[0.98] text-sm uppercase tracking-widest ${
-                 eventType === "homecoming" 
-                   ? "bg-red-800 hover:bg-crimson-luxury shadow-red-800/25" 
-                   : "bg-gold hover:bg-gold-light shadow-gold/20"
-               }`}
-            >
-               <Edit2 className="w-4 h-4" />
-               Update RSVP
-            </button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className={`p-8 sm:p-10 rounded-[32px] shadow-sm border transition-colors duration-500 ${
-            eventType === "homecoming" ? "bg-blush border-red-800/5" : "bg-[#f2efe9] border-charcoal/5"
-          }`}>
-            
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl mb-6 text-sm text-center">
-                {error}
+          ) : hasRsvpAlready ? (
+            <div className="bg-white p-8 sm:p-10 rounded-[32px] shadow-sm border border-charcoal/10 flex flex-col items-center text-center">
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 ${status === 'attending' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                <CheckCircle2 className="w-10 h-10" />
               </div>
-            )}
+              <h3 className="font-serif text-2xl text-charcoal mb-2">You have RSVP'd</h3>
+              <p className="text-charcoal/60 mb-8 italic">
+                Status: <span className="font-bold text-charcoal non-italic">{status === 'attending' ? 'Attending' : 'Not Attending'}</span>
+                {status === 'attending' && <>, alongside <span className="font-bold text-charcoal non-italic">{guestsCount}</span> guest(s)</>}
+              </p>
 
-            <div className="space-y-6">
-              
-              <div>
-                <label className="block text-sm font-sans text-charcoal/80 mb-2">Name</label>
-                <input 
-                  type="text" 
-                  value={guestName}
-                  disabled
-                  placeholder="Eg: Namal Perera"
-                  className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/60 shadow-sm focus:outline-none"
-                />
-              </div>
+              <button
+                onClick={() => setIsEditing(true)}
+                className={`flex items-center gap-2 text-white px-8 py-4 rounded-full transition-all shadow-md active:scale-[0.98] text-sm uppercase tracking-widest ${eventType === "homecoming"
+                  ? "bg-red-800 hover:bg-crimson-luxury shadow-red-800/25"
+                  : "bg-gold hover:bg-gold-light shadow-gold/20"
+                  }`}
+              >
+                <Edit2 className="w-4 h-4" />
+                Update RSVP
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className={`p-8 sm:p-10 rounded-[32px] shadow-sm border transition-colors duration-500 ${eventType === "homecoming" ? "bg-blush border-red-800/5" : "bg-[#f2efe9] border-charcoal/5"
+              }`}>
 
-              <div>
-                <label className="block text-sm font-sans text-charcoal/80 mb-2">Will you attend?</label>
-                <div className="relative">
-                  <select
-                    value={status || ""}
-                    onChange={(e) => setStatus(e.target.value as "attending" | "declined")}
-                    className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/70 shadow-sm focus:outline-none appearance-none"
-                  >
-                    <option value="" disabled>Select</option>
-                    <option value="attending">Yes, I will attend</option>
-                    <option value="declined">Sorry, I cannot attend</option>
-                  </select>
-                  <div className="absolute top-1/2 right-4 -translate-y-1/2 pointer-events-none">
-                    <svg className="w-4 h-4 text-charcoal/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                  </div>
+              {error && (
+                <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl mb-6 text-sm text-center">
+                  {error}
                 </div>
-              </div>
-
-              {status === "attending" && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <label className="block text-sm font-sans text-charcoal/80 mb-2">Number of Guests</label>
-                  <input 
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={guestsCount}
-                    onChange={(e) => setGuestsCount(Number(e.target.value))}
-                    className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/70 shadow-sm focus:outline-none"
-                  />
-                </motion.div>
               )}
 
-              <div>
-                <label className="block text-sm font-sans text-charcoal/80 mb-2">Message</label>
-                <textarea 
-                  value={foodPreference}
-                  onChange={(e) => setFoodPreference(e.target.value)}
-                  placeholder="Leave a message for us..."
-                  rows={3}
-                  className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/70 shadow-sm focus:outline-none resize-none"
-                />
-              </div>
+              <div className="space-y-6">
 
-              <div className="flex flex-col gap-4 mt-8">
-                <button
-                  type="submit"
-                  disabled={!status || isSubmitting}
-                  className={`w-full text-white font-bold py-4 rounded-full transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-sm uppercase tracking-widest ${
-                    eventType === "homecoming" 
-                      ? "bg-red-800 hover:bg-red-700 shadow-red-800/25" 
-                      : "bg-gold hover:bg-gold-light shadow-gold/20"
-                  }`}
-                >
-                  {isSubmitting ? "Sending..." : initialStatus ? "Update RSVP" : "Submit"}
-                </button>
-                
-                {initialStatus && (
-                   <button
-                    type="button"
-                    onClick={() => setIsEditing(false)}
-                    className="w-full text-charcoal/40 font-bold py-2 text-xs uppercase tracking-widest hover:text-charcoal/60 transition-all"
+                <div>
+                  <label className="block text-sm font-sans text-charcoal/80 mb-2">Name</label>
+                  <input
+                    type="text"
+                    value={guestName}
+                    disabled
+                    placeholder="Eg: Namal Perera"
+                    className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/60 shadow-sm focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-sans text-charcoal/80 mb-2">Will you attend?</label>
+                  <div className="relative">
+                    <select
+                      value={status || ""}
+                      onChange={(e) => setStatus(e.target.value as "attending" | "declined")}
+                      className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/70 shadow-sm focus:outline-none appearance-none"
+                    >
+                      <option value="" disabled>Select</option>
+                      <option value="attending">Yes, I will attend</option>
+                      <option value="declined">Sorry, I cannot attend</option>
+                    </select>
+                    <div className="absolute top-1/2 right-4 -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-charcoal/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                  </div>
+                </div>
+
+                {status === "attending" && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.3 }}
                   >
-                    Cancel
-                  </button>
+                    <label className="block text-sm font-sans text-charcoal/80 mb-2">Number of Guests</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={guestsCount}
+                      onChange={(e) => setGuestsCount(Number(e.target.value))}
+                      className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/70 shadow-sm focus:outline-none"
+                    />
+                  </motion.div>
                 )}
+
+                <div>
+                  <label className="block text-sm font-sans text-charcoal/80 mb-2">Message</label>
+                  <textarea
+                    value={foodPreference}
+                    onChange={(e) => setFoodPreference(e.target.value)}
+                    placeholder="Leave a message for us..."
+                    rows={3}
+                    className="w-full bg-white border border-charcoal/5 rounded-xl px-4 py-3 sm:py-4 text-charcoal/70 shadow-sm focus:outline-none resize-none"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-4 mt-8">
+                  <button
+                    type="submit"
+                    disabled={!status || isSubmitting}
+                    className={`w-full text-white font-bold py-4 rounded-full transition-all shadow-md active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-sm uppercase tracking-widest ${eventType === "homecoming"
+                      ? "bg-red-800 hover:bg-red-700 shadow-red-800/25"
+                      : "bg-gold hover:bg-gold-light shadow-gold/20"
+                      }`}
+                  >
+                    {isSubmitting ? "Sending..." : initialStatus ? "Update RSVP" : "Submit"}
+                  </button>
+
+                  {initialStatus && (
+                    <button
+                      type="button"
+                      onClick={() => setIsEditing(false)}
+                      className="w-full text-charcoal/40 font-bold py-2 text-xs uppercase tracking-widest hover:text-charcoal/60 transition-all"
+                    >
+                      Cancel
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
-          </form>
-        )}
-      </motion.div>
-    </div>
+            </form>
+          )}
+        </motion.div>
+      </div>
     </section>
   );
 }

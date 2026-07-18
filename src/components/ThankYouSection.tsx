@@ -9,22 +9,21 @@ export default function ThankYouSection({ eventType }: { eventType?: string }) {
     <section className="relative w-full min-h-[80vh] flex flex-col justify-center items-center text-center overflow-hidden py-32 px-6 mt-12">
       {/* Background Image & Warm Overlay */}
       <div className="absolute inset-0 z-0">
-        <Image 
-          src="/couple.png" 
-          alt="Couple Silhouette" 
-          fill 
-          className="object-cover object-center" 
+        <Image
+          src="/couple-2.JPG"
+          alt="Couple Silhouette"
+          fill
+          className="object-cover object-center"
         />
         {/* A rich, warm, golden-brown or burgundy gradient overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-b transition-all duration-500 ${
-          eventType === "homecoming" 
-            ? "from-[#5c0612]/95 via-[#4a040b]/95 to-[#2d0206]/95" 
-            : "from-[#804e28]/95 via-[#633b1b]/95 to-[#38200d]/95"
-        }`} />
+        <div className={`absolute inset-0 bg-gradient-to-b transition-all duration-500 ${eventType === "homecoming"
+          ? "from-[#5c0612]/95 via-[#4a040b]/95 to-[#2d0206]/95"
+          : "from-[#804e28]/95 via-[#633b1b]/95 to-[#38200d]/95"
+          }`} />
       </div>
 
       {/* Content */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -53,14 +52,13 @@ export default function ThankYouSection({ eventType }: { eventType?: string }) {
 
         {/* Floating Crown Icon at Bottom Right */}
         <div className="absolute -bottom-24 right-4 sm:right-10 hidden sm:block">
-           <Crown className="w-5 h-5 text-white/30 stroke-[1.5]" />
+          <Crown className="w-5 h-5 text-white/30 stroke-[1.5]" />
         </div>
       </motion.div>
-      
+
       {/* Silhouette styling hint (simulated on mobile if the photo doesn't have one natively) */}
-      <div className={`absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t transition-all duration-500 z-0 ${
-        eventType === "homecoming" ? "from-[#1c0104]" : "from-[#2a1708]"
-      } to-transparent`} />
+      <div className={`absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t transition-all duration-500 z-0 ${eventType === "homecoming" ? "from-[#1c0104]" : "from-[#2a1708]"
+        } to-transparent`} />
     </section>
   );
 }

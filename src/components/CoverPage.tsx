@@ -59,7 +59,7 @@ export default function CoverPage({
             {/* Couple Image */}
             <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shadow-lg border-2 border-white">
               <Image
-                src="/couple.png"
+                src="/couple-2.JPG"
                 alt="The Happy Couple"
                 fill
                 className="object-cover"
