@@ -72,21 +72,22 @@ export default function HeroSection({
       {/* Gradient Overlay for Text Readability */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10 z-0" />
 
+      {/* Badge — positioned directly on the section to avoid flex reflow */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, delay: 0.5 }}
+        className="absolute top-16 sm:top-24 left-1/2 -translate-x-1/2 z-20 glass border border-white/20 rounded-full px-4 sm:px-6 py-2 sm:py-2.5 flex items-center gap-2 sm:gap-3 backdrop-blur-sm"
+      >
+        <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 shrink-0" />
+        <span className="text-[10px] sm:text-xs font-sans tracking-[0.15em] sm:tracking-[0.25em] uppercase text-white/90 whitespace-nowrap">
+          {eventType === "homecoming" ? "Our Homecoming Celebration" : "We're Getting Married"}
+        </span>
+        <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 shrink-0" />
+      </motion.div>
+
       {/* Content wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-start pt-36 sm:pt-48 h-full w-full px-4 text-white text-center">
-
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="absolute top-16 sm:top-24 glass border border-white/20 rounded-full px-4 sm:px-6 py-2 sm:py-2.5 flex items-center justify-center gap-2 sm:gap-3 backdrop-blur-sm max-w-[90%] sm:max-w-none"
-        >
-          <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 shrink-0" />
-          <span className="text-[10px] sm:text-xs font-sans tracking-[0.15em] sm:tracking-[0.25em] uppercase text-white/90 whitespace-nowrap">
-            {eventType === "homecoming" ? "Our Homecoming Celebration" : "We're Getting Married"}
-          </span>
-          <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white/80 shrink-0" />
-        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
